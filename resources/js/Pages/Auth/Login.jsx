@@ -32,6 +32,11 @@ export default function Login({ status, canResetPassword }) {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
+            <h1 className="text-2xl font-bold">Welcome Back</h1>
+            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                Enter your email address and password below to continue.
+            </div>
+
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />

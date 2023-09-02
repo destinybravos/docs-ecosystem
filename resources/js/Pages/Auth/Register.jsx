@@ -30,6 +30,11 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
+            <h1 className="text-2xl font-bold">Sign Up Now!</h1>
+            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                Sign up to the University Document EcoSystem to access various information and documents.
+            </div>
+
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />

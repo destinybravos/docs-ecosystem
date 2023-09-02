@@ -5,7 +5,11 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+            header={<div className="flex items-center justify-between">
+                <aside className="border-b-4 py-2 border-b-primary">
+                    <h1>Dashboard</h1>
+                </aside>
+            </div>}
         >
             <Head title="Dashboard" />
 
