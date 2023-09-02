@@ -11,7 +11,7 @@ const PageBanner = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto">
                 <div className="flex items-center justify-center text-center md:text-left mb-10">
                     <aside>
-                        <h1 className="text-5xl font-black mb-4" style={{textShadow:`0 0 10px #165a28`}}>
+                        <h1 className="text-4xl sm:text-5xl font-black mb-4" style={{textShadow:`0 0 10px #165a28`}}>
                             Unlimited Access To University <span className="text-secondary">Documents</span> Ecosystem!
                         </h1>
                         <p className="text-sm mb-5">

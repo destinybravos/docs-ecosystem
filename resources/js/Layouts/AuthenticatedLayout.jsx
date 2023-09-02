@@ -113,9 +113,9 @@ export default function Authenticated({ user, header, children }) {
                                                     >
                                                         <div className="flex gap-x-3">
                                                             <img src={user.avatar ? user.avatar : avatar} alt=' ' className="rounded-full h-9 w-9 bg-slate-300" />
-                                                            <aside className="hidden md:block">
-                                                                <strong>{user.name} {user?.lastname}</strong> <br />
-                                                                <small className="text-slate-500">@{user.email}</small>
+                                                            <aside className="hidden md:block text-left">
+                                                                <strong>{user.firstname} {user?.lastname}</strong> <br />
+                                                                <small className="text-slate-500">{user.account_id}</small>
                                                             </aside>
                                                         </div>
 

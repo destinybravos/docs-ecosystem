@@ -16,6 +16,11 @@ class PageController extends Controller
 
 
     // Authenticated Rouute Methods
+    public function complete_registration(Request $request) 
+    {
+        return Inertia::render('Auth/CompleteRegistration', []);
+    }
+
     public function dashboard(Request $request)
     {
         return Inertia::render('Admin/Dashboard', []);

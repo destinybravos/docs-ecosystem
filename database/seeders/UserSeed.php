@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeed extends Seeder
 {
@@ -14,7 +15,12 @@ class UserSeed extends Seeder
     public function run(): void
     {
         User::create([
-
+            'firstname' => 'Super',
+            'lastname' => 'Admin',
+            'email' => 'admin@procity.com',
+            'password' => Hash::make('12345678'),
+            'role' => 'admin',
+            'account_id' => 'ADM-001'
         ]);
     }
 }

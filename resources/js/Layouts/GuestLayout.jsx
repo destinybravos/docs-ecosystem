@@ -3,8 +3,8 @@ import { Link } from '@inertiajs/react';
 
 export default function Guest({ children }) {
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center pt-6 sm:pt-0 bg-primary dark:bg-gray-900 px-4">
-            <div>
+        <div className="min-h-screen flex flex-col justify-center items-center py-6 sm:pt-0 bg-primary dark:bg-gray-900 px-4">
+            <div className="mt-4">
                 <Link href="/">
                     <img src={ApplicationLogo} className="w-20 h-20 fill-current text-gray-500" />
                 </Link>
