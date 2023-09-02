@@ -2,7 +2,7 @@ import React from 'react'
 import logo from '@/Assets/Images/logo.png';
 import { Link } from '@inertiajs/react';
 import { BsMenuButtonWide } from 'react-icons/bs';
-import { VscSignIn } from 'react-icons/vsc';
+import { VscSignIn, VscDashboard } from 'react-icons/vsc';
 import { FiUserPlus } from 'react-icons/fi';
 
 const PageHeader = ({user}) => {
@@ -37,7 +37,7 @@ const PageHeader = ({user}) => {
                 </li>
                 { user ? (
                 <li className="md:ml-8">
-                    <Link href={route('homepage')} className="py-2 px-4 bg-primary rounded-lg text-white">
+                    <Link href={route('dashboard')} className="py-2 px-4 bg-primary rounded-lg text-white">
                         <VscDashboard className="inline-block w-5 h-5" /> <span>Dashboard</span>
                     </Link>
                 </li>

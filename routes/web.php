@@ -21,6 +21,7 @@ Route::get('/', [PageController::class, 'index'])->name('homepage');
 
 Route::middleware('auth')->group(function () {
     Route::get('/complete-registration', [PageController::class, 'complete_registration'])->name('complete_registration');
+    Route::post('/complete-registration', [PageController::class, 'save_complete_userdata'])->name('save_complete_userdata');
 
     Route::middleware('accouunt_iscomplete')->group(function () {
         Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');

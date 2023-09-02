@@ -19,7 +19,7 @@ class AccountCompleted
         $user = Auth::user();
 
         if($user->role != 'admin' && ($user->account_id == null || $user->department_id == null)){
-            return redirect()->route('complete_registration')->with('message', 'Kindly completed the signup process');
+            return redirect()->route('complete_registration');
         }
 
         return $next($request);
