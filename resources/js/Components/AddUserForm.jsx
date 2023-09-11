@@ -50,16 +50,6 @@ const AddUserForm = ({closeModal}) => {
                     <input type='text' name='account_id' required placeholder='Enter ID' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
 
-                <div className=" p-1  flex items-center gap-4 space-x-3">
-                    <input type='text' name='username'required placeholder='Enter username' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-                    <select name="department_id" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
-                        <option value="" selected="selected">- Select Department-</option>
-                        <option value="1">Mechanical Engineering</option>
-                        <option value="2">Electrical Engineering</option>
-                    
-                    </select>
-                </div>
-
                 <div className=" p-1  flex items-center gap-4 ">
                   <input type='password'required name='password'  placeholder='Enter Password'  className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                   <input type='email'required name='email' placeholder='Enter Email Address' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
@@ -78,7 +68,14 @@ const AddUserForm = ({closeModal}) => {
                 </div>
 
                 <div className="flex items-center gap-4 mb-4 space-x-3">
-                   
+                    <div className="w-full">
+                        <select name="department_id" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
+                            <option value="" selected="selected">- Select Department-</option>
+                            <option value="1">Mechanical Engineering</option>
+                            <option value="2">Electrical Engineering</option>
+                        
+                        </select>
+                    </div>  
                     <div className='w-full'>
                         <input type='text' name='level' required placeholder='Enter Level' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                     </div>

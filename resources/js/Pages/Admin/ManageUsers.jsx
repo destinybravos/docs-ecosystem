@@ -56,6 +56,25 @@ export default function ManageUsers({ auth }) {
         setUserID(ID);
     }
 
+    const[user, setUser] = React.useState({});
+
+    const getUser = (user)=>{
+        setUser(user);
+    }
+
+    const searchUsers = async (query)=>{
+        try {
+             const res = await axios.post(route(`api.admin.search_users`), {searchValue : query});
+             console.log(res);
+            //  setPagination(res.data.data.users);
+            const users = res.data.body.users.data;
+            setUsers(users);
+ 
+         } catch (error) {
+             console.log(error);
+         }
+     }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -76,7 +95,7 @@ export default function ManageUsers({ auth }) {
                         
                      <div className="flex items-center bg-white rounded-lg pr-3 ">
                          <input 
-                            
+                             onKeyUp={(e) => searchUsers(e.target.value)}
                              type="text" 
                              placeholder='Search User'
                              className="rounded-lg focus:ring-0 border border-transparent transition-all duration-75"
@@ -95,6 +114,7 @@ export default function ManageUsers({ auth }) {
                         <AllUsersTable 
                             users={users}
                             getUserID={getUserID}
+                            getUser={getUser}
                             openDeleteUser = {openDeleteUser}
                             openEditUserForm = {openEditUserForm }
                         />
@@ -114,7 +134,7 @@ export default function ManageUsers({ auth }) {
                     
                     {isEditUser && 
                         <CustomModal 
-                            childern={<EditUserForm user={{name:"Godwin"}}  closeModal ={closeModal}/>}
+                            childern={<EditUserForm user={user}  closeModal ={closeModal}/>}
                             closeModal ={closeModal}
                         />
                     } 

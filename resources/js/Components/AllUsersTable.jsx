@@ -55,7 +55,7 @@ const AllUsersTable = ({openEditUserForm, openDeleteUser,getUserID,getUser,users
                                 <div id={user.id} className="flex items-center cursor-pointer hover:text-slate-800" onClick={openEditUserForm }>
                                     <VscGear className="text-base mr-1"/>
 
-                                    <small  className="pr-1 inline-block">Modify</small> <small>Roles</small>
+                                    <small onClick={()=>getUser(user)} className="pr-1 inline-block">Modify</small> <small>Roles</small>
                                 </div>
 
 

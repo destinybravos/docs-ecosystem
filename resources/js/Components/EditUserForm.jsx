@@ -7,14 +7,15 @@ import Loader from '@/Components/Loader';
 
 
 
-const AddUserForm = ({closeModal}) => {
+const EditUserForm = ({user, closeModal}) => {
     const[isProcessing, setIsProcessing] = React.useState(false);
-
+console.log(user);
   // submit data
   const submitData = (e) =>{
-    e.preventDefault()
+    e.preventDefault();
+    const data = new FormData(e.target);
     setIsProcessing(true);
-    axios.post(route('api.admin.create_user'), data)
+    axios.post(route('api.admin.update_user'), data)
     .then(res=>{    
         alert(res.data.message);
         setIsProcessing(false);
@@ -29,45 +30,33 @@ const AddUserForm = ({closeModal}) => {
   return (
     <div>
         <div className='text-md font-bold'>Edit User</div>
-         <form onSubmit={(e)=> submitData(e) }  className="mt-4">
+        <form onSubmit={(e)=> submitData(e) }  className="mt-4">
             <div className='flex flex-col gap-3 '>
+                <input type="hidden" name='user_id'  value={user.id} readOnly={true}/>
+
 
 
                 <div className=" p-1  flex items-center gap-4 space-x-3">
-                    <select name="role" id="role" className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
+                    <select name="role" className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
                         <option value="" selected="selected">- Select user type-</option>
                         <option value="Student">Student</option>
                         <option value="Staff">Staff</option>
                        
                     </select>
-                    <input type='text' name='firstname' placeholder='Enter firstname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <input type='text' defaultValue={user.firstname} name='firstname'  placeholder='Enter firstname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                    
                 </div>
 
-                <div className=" p-1  flex items-center gap-4 space-x-3">
-                    <select name="role" id="role" className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
-                        <option value="" selected="selected">- Select Department-</option>
-                        <option value="Student">Mechanical Engineering</option>
-                        <option value="Staff">Electrical Engineering</option>
-                       
-                    </select>
-                   
+                <div className='p-1 flex items-center gap-4 space-x-3'>
+                    <input type='text'defaultValue={user.lastname} name='lastname' placeholder='Enter Lastname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <input type='text'defaultValue={user.account_id} name='account_id'  placeholder='Enter ID' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
 
-                <div className=" p-1  flex items-center gap-4 space-x-3">
-                  
-                    <input type='text' name='lastname' placeholder='Enter Lastname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-
-                    <input type='text' name='username' placeholder='Enter username' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-                   
-                </div>
+                
 
                 <div className=" p-1  flex items-center gap-4 ">
-                  
                   <input type='password' name='password'  placeholder='Enter Password'  className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-
-                  <input type='email' name='email' placeholder='Enter Email Address' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-                 
+                  <input type='email'name='email' defaultValue={user.email}placeholder='Enter Email Address' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
 
                 <div className="flex items-center gap-4 mb-4 space-x-3">
@@ -78,9 +67,25 @@ const AddUserForm = ({closeModal}) => {
                         <input type='file' name='avatar' id='avatar' className="hidden bg-gray-100" />
                     </div>
                     <div className='w-full'>
-                    <input type='text' name='phone' placeholder='Enter Phone No' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <input type='text' name='phone'  defaultValue={user.phone} placeholder='Enter Phone No' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                     </div>
                 </div>
+
+                <div className="flex items-center gap-4 mb-4 space-x-3">
+                    <div className="w-full">
+                        <select name="department_id"  className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
+                            <option value="" selected="selected">- Select Department-</option>
+                            <option value="1">Mechanical Engineering</option>
+                            <option value="2">Electrical Engineering</option>
+                        
+                        </select>
+                    </div>  
+                    <div className='w-full'>
+                        <input type='text' name='level' defaultValue={user.level} placeholder='Enter Level' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    </div>
+                </div>
+
+               
 
             </div>
             <button className='bg-primary rounded-md px-6 py-2 text-white w-full'>Save Changes</button>
@@ -96,4 +101,4 @@ const AddUserForm = ({closeModal}) => {
   )
 }
 
-export default AddUserForm
+export default EditUserForm
