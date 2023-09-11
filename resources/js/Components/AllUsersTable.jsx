@@ -25,17 +25,18 @@ const AllUsersTable = ({openEditUserForm, openDeleteUser,getUserID,getUser,users
                 <td colSpan={4} className="p-4 dark:text-black">Showing {pagination.data?.length} of {pagination.total} total Users</td>
             </tr>}
 
-           
-                    <tr className='border-b border-b-[#eef0f3]' key={1}>
+                { users && users.map(user =>(
+               
+                    <tr className='border-b border-b-[#eef0f3]' key={user.id}>
                         <td className="p-2">
                             <input type="checkbox" />
                         </td>
 
                         <td className="flex items-center sm:p-2 pr-12 pl-4 py-4">
-                            <img src={ avatar} className="w-[45px] h-[45px] object-cover rounded-full mr-4"/>
+                            <img s src={user.avatar ? user.avatar : avatar} className="w-[45px] h-[45px] object-cover rounded-full mr-4"/>
                             <div>
-                                <h5 className="text-sm font-semibold text-black">Moses Yusuf</h5>
-                                <p className="font-normal text-[13px] text-slate-500">moses@gmail.com</p>
+                                <h5 className="text-sm font-semibold text-black">{user.firstname + " "+ user.lastname}</h5>
+                                <p className="font-normal text-[13px] text-slate-500">{user.email}</p>
                             </div>
                         </td>
 
@@ -43,7 +44,7 @@ const AllUsersTable = ({openEditUserForm, openDeleteUser,getUserID,getUser,users
 
                         <td className="p-2">
                             <div className="flex gap-3">
-                                <p className="bg-primary hover:bg-[#f33636] transition-all duration-300 py-1 px-2 text-xs rounded-full text-white cursor-pointer text-center">Student</p>
+                                <p className="bg-primary hover:bg-[#f33636] transition-all duration-300 py-1 px-2 text-xs rounded-full text-white cursor-pointer text-center">{user.role}</p>
                             </div>
                         </td>
 
@@ -51,7 +52,7 @@ const AllUsersTable = ({openEditUserForm, openDeleteUser,getUserID,getUser,users
                         <td className="p-2">
 
                             <div className="flex gap-2 text-slate-500">
-                                <div id={1} className="flex items-center cursor-pointer hover:text-slate-800" onClick={openEditUserForm }>
+                                <div id={user.id} className="flex items-center cursor-pointer hover:text-slate-800" onClick={openEditUserForm }>
                                     <VscGear className="text-base mr-1"/>
 
                                     <small  className="pr-1 inline-block">Modify</small> <small>Roles</small>
@@ -60,12 +61,16 @@ const AllUsersTable = ({openEditUserForm, openDeleteUser,getUserID,getUser,users
 
                                 <div id={20} className="flex items-center cursor-pointer hover:text-slate-800" onClick={openDeleteUser}>
                                     <FaTimesCircle className="text-base mr-1"/>
-                                    <small  className="pr-1 inline-block">Remove </small><small>User</small>
+                                    <small onClick={()=>getUserID(user.id)} className="pr-1 inline-block">Remove </small><small>User</small>
                                 </div>
                             </div>
                         </td>
 
                     </tr>
+
+                         
+                    ))
+                }
               
             
             

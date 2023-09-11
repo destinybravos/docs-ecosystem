@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Throwable;
 use App\Models\User;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -98,8 +99,16 @@ class AdminController extends Controller
             ], 422);
         }
 
-        $users = User::where('id', $request->user_id)->delete();
-        return $this->sendResponse("Users deleted successfully", []);
+        try{
+            $deleteUser = User::where('id', $request->user_id)->delete();
+            if($deleteUser){
+                return $this->sendResponse("Users deleted successfully", []);
+            }else{
+                return $this->sendError('Could not delete user');
+            }
+        }catch(Throwable $th){
+            return $this->sendError($th->getMessage());
+        }
     }
     
     public function fetch_users()

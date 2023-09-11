@@ -12,6 +12,7 @@ const AddUserForm = ({closeModal}) => {
 
   // submit data
   const submitData = (e) =>{
+    const data = new FormData(e.target);
     e.preventDefault()
     setIsProcessing(true);
     axios.post(route('api.admin.create_user'), data)
@@ -22,6 +23,7 @@ const AddUserForm = ({closeModal}) => {
     })
     .catch(err=>{
         setIsProcessing(false);
+        alert("Could not process your request at this time. Please try again!")
         console.log(err)
     })
   }
@@ -34,40 +36,33 @@ const AddUserForm = ({closeModal}) => {
 
 
                 <div className=" p-1  flex items-center gap-4 space-x-3">
-                    <select name="role" id="role" className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
+                    <select name="role" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
                         <option value="" selected="selected">- Select user type-</option>
                         <option value="Student">Student</option>
                         <option value="Staff">Staff</option>
                        
                     </select>
-                    <input type='text' name='firstname' placeholder='Enter firstname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <input type='text' name='firstname' required placeholder='Enter firstname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                    
+                </div>
+                <div className='p-1 flex items-center gap-4 space-x-3'>
+                    <input type='text' name='lastname' required placeholder='Enter Lastname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <input type='text' name='account_id' required placeholder='Enter ID' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
 
                 <div className=" p-1  flex items-center gap-4 space-x-3">
-                    <select name="role" id="role" className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
+                    <input type='text' name='username'required placeholder='Enter username' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <select name="department_id" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
                         <option value="" selected="selected">- Select Department-</option>
-                        <option value="Student">Mechanical Engineering</option>
-                        <option value="Staff">Electrical Engineering</option>
-                       
+                        <option value="1">Mechanical Engineering</option>
+                        <option value="2">Electrical Engineering</option>
+                    
                     </select>
-                   
-                </div>
-
-                <div className=" p-1  flex items-center gap-4 space-x-3">
-                  
-                    <input type='text' name='lastname' placeholder='Enter Lastname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-
-                    <input type='text' name='username' placeholder='Enter username' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-                   
                 </div>
 
                 <div className=" p-1  flex items-center gap-4 ">
-                  
-                  <input type='password' name='password'  placeholder='Enter Password'  className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-
-                  <input type='email' name='email' placeholder='Enter Email Address' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-                 
+                  <input type='password'required name='password'  placeholder='Enter Password'  className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                  <input type='email'required name='email' placeholder='Enter Email Address' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
 
                 <div className="flex items-center gap-4 mb-4 space-x-3">
@@ -78,7 +73,14 @@ const AddUserForm = ({closeModal}) => {
                         <input type='file' name='avatar' id='avatar' className="hidden bg-gray-100" />
                     </div>
                     <div className='w-full'>
-                    <input type='text' name='phone' placeholder='Enter Phone No' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <input type='text' name='phone' required placeholder='Enter Phone No' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-4 mb-4 space-x-3">
+                   
+                    <div className='w-full'>
+                        <input type='text' name='level' required placeholder='Enter Level' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                     </div>
                 </div>
 

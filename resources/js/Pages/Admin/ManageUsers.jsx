@@ -13,6 +13,24 @@ export default function ManageUsers({ auth }) {
     const[isEditUser, setIsEditUser] = React.useState(false);
     const[isDeleteUser, setIsDeleteUser] = React.useState(false)
     const [pagination, setPagination] = React.useState([]);
+    const[users, setUsers] = React.useState(null);
+
+    const getUsers = async ()=>{
+        try {
+            const res = await axios.get(route(`api.admin.fetch_users`));
+            //  setPagination(res.data.data.users);
+            const users = res.data.body.users.data;
+            setUsers(users);
+ 
+         } catch (error) {
+            console.log(error);
+        }
+     }
+
+     React.useEffect(()=>{
+        getUsers();
+    },[]);
+ 
 
     const openAddUser = ()=>{
         setIsOpenAddUser(true);
@@ -29,8 +47,15 @@ export default function ManageUsers({ auth }) {
         setIsOpenAddUser(false);
         setIsEditUser(false);
         setIsDeleteUser(false);
-        // getUsers();
+        getUsers();
     }
+
+    const[userID, setUserID] = React.useState();
+
+    const getUserID = (ID)=>{
+        setUserID(ID);
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -68,6 +93,8 @@ export default function ManageUsers({ auth }) {
 
                     <div className='rounded-lg bg-white h-screen overflow-auto mt-8 shadow-sm shadow-white'>
                         <AllUsersTable 
+                            users={users}
+                            getUserID={getUserID}
                             openDeleteUser = {openDeleteUser}
                             openEditUserForm = {openEditUserForm }
                         />
