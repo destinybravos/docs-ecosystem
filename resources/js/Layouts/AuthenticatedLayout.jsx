@@ -14,6 +14,7 @@ import logo from '@/Assets/Images/logo.png';
 import Dropdown from '@/Components/Dropdown';
 import { Link, Head } from '@inertiajs/react';
 import avatar from './../Assets/avatar.svg';
+import SideBar from '@/Components/SideBar';
 
 export default function Authenticated({ user, header, children }) {
     const [dateState, setDateState] = useState(new Date());
@@ -45,13 +46,7 @@ export default function Authenticated({ user, header, children }) {
 
                         {/* Navigation Segment */}
                         <nav className="flex-grow text-base">
-                            <ul>
-                                <li className={` ${route().current('dashboard') && 'border-l-4 border-l-primary text-primary'}`}>
-                                    <Link href={route('dashboard')} className={`px-6 py-2 flex items-center`}>
-                                        <RxDashboard className="mr-2" /> Dashboard
-                                    </Link>
-                                </li>
-                            </ul>
+                            <SideBar user={user} />
                         </nav>
 
                         {/* Extra Navigation or Logout Button */}
