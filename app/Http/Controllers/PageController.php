@@ -45,4 +45,14 @@ class PageController extends Controller
     {
         return Inertia::render('Admin/Dashboard', []);
     }
+
+    public function addDocment(Request $request)
+    {
+        return Inertia::render('Admin/AddDocument', []);
+    }
+
+    public function manageUsers(Request $request)
+    {
+        return Inertia::render('Admin/ManageUsers', []);
+    }
 }
