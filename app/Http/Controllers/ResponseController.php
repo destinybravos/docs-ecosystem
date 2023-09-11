@@ -16,7 +16,7 @@ trait ResponseController
         $response = [
             'success' => true,
             'message' => $message,
-            'data'    => $result,
+            'body'    => $result,
         ];
 
         return response()->json($response, 200);
@@ -35,7 +35,7 @@ trait ResponseController
         ];
 
         if(!empty($errorPayload)){
-            $response['data'] = $errorPayload;
+            $response['body'] = $errorPayload;
         }
 
         return response()->json($response, $statusCode);

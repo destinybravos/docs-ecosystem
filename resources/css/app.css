@@ -7,7 +7,7 @@ html, body{
 }
 
 .btn-primary {
-    @apply font-bold md:gap-2 bg-gradient-to-t from-primary to-[#34ac54] shadow-md dark:bg-transparent text-white rounded-full px-4 py-2 dark:text-white;
+    @apply font-bold md:gap-2 bg-gradient-to-t from-primary to-primaryLight hover:bg-primaryLight shadow-md dark:bg-transparent text-white rounded-full px-4 py-2 dark:text-white;
 }
 
 .btn-secondary{

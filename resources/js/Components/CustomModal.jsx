@@ -35,7 +35,7 @@ export default function Modal({ children, show = false, maxWidth = '2xl', closea
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="absolute inset-0 bg-black/50" />
+                    <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
                 </Transition.Child>
 
                 <Transition.Child
