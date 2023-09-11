@@ -1,23 +1,27 @@
+import Checkbox from '@/Components/Checkbox';
 import Modal from '@/Components/CustomModal';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { FaUserTag } from 'react-icons/fa';
+import { FaSave, FaUserTag } from 'react-icons/fa';
+import { FiLayers } from 'react-icons/fi';
 import { HiDocumentAdd } from 'react-icons/hi';
+import { MdSchool } from 'react-icons/md';
 
 export default function AddDocument({ auth }) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [departments, setDepartment] = useState([]);
+    const [searchParam, setSearchParam] = useState(null);
 
     let fetchDepartments = async () => {
         await axios.get(route('api.admin.fetch_departments'))
         .then((response) => {
-            setDepartment(response.data.data.departments);
+            setDepartment(response.data.body.departments);
         })
         .catch((err) => {
             console.log("Error::=>", err?.response?.data);   
@@ -25,8 +29,14 @@ export default function AddDocument({ auth }) {
     }
 
     useEffect(() => {
+        let url = new URL(location.href);
+        let search = url.searchParams.get('search');
+        if (search !== undefined && search !== null && search !== '') {
+            setSearchParam(search)
+        }
         fetchDepartments();
     }, [])
+
     
 
     let submit = async ()=> {
@@ -45,10 +55,21 @@ export default function AddDocument({ auth }) {
             <Head title="Manage Users" />
 
             <section>
-                <div className="flex justify-between px-4">
-                    <aside></aside>
+                <div className="flex items-center gap-3 justify-between md:px-4">
+                    <aside className="flex-grow max-w-[400px]">
+                        <div className="">
+                            <TextInput
+                                id="search-input"
+                                type="search"
+                                name="search_input"
+                                defaultValue={searchParam}
+                                placeholder="Search for a specific document"
+                                className="mt-1 block w-full"
+                            />
+                        </div>
+                    </aside>
                     <aside>
-                        <button className="btn-primary" onClick={() => setShowAddModal(true)}>
+                        <button className="btn-primary text-xs sm:text-sm" onClick={() => setShowAddModal(true)}>
                             Add Document
                         </button>
                     </aside>
@@ -77,6 +98,7 @@ export default function AddDocument({ auth }) {
                                     type="text"
                                     name="doc_name"
                                     className="mt-1 block w-full"
+                                    placeholder="Enter Document Name"
                                 />
                             </div>
                             <div className="mt-4">
@@ -99,19 +121,19 @@ export default function AddDocument({ auth }) {
                             </div>
                             <div className="mt-4">
                                 <InputLabel htmlFor="doc_name">
-                                    <FaUserTag className="inline" /> Upload File
+                                    <FiLayers className="inline" /> Upload File
                                 </InputLabel>
 
                                 <TextInput
                                     id="access_by"
                                     name="access_by"
                                     type="file"
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full py-2 px-2"
                                 />
                             </div>
                             <div className="mt-4">
                                 <InputLabel htmlFor="doc_name">
-                                    <FaUserTag className="inline" /> Department
+                                    <MdSchool className="inline" /> Department
                                 </InputLabel>
 
                                 <SelectInput
@@ -126,24 +148,17 @@ export default function AddDocument({ auth }) {
                             </div>
                             
                             <div className="mt-4">
-                                <InputLabel htmlFor="doc_name">
-                                    <FaUserTag className="inline" /> Department
-                                </InputLabel>
-
-                                <SelectInput
-                                    id="access_by"
-                                    name="access_by"
-                                    className="mt-1 block w-full"
-                                    defaultValue={``}
-                                >
-                                    <option value="">Select Department</option>
-                                    {departments && departments.map(department => (<option key={department.id} value={department.id}>{department.name}</option>))}
-                                </SelectInput>
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        name="department_only"
+                                    />
+                                    <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Department Only</span>
+                                </label>
                             </div>
                             
-                            <div className="mt-4">
-                                <PrimaryButton className="ml-4" disabled={processing}>
-                                    Save Document
+                            <div className="mt-4 md:col-span-2">
+                                <PrimaryButton className="py-1 gap-x-2" disabled={processing}>
+                                    <FaSave className="w-6 h-6" /> Save Document
                                 </PrimaryButton>
                             </div>
                         </div>

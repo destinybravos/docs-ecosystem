@@ -33,8 +33,6 @@ const AddUserForm = ({closeModal}) => {
         <div className='text-md font-bold'>Add User</div>
          <form onSubmit={(e)=> submitData(e) }  className="mt-4">
             <div className='flex flex-col gap-3 '>
-
-
                 <div className=" p-1  flex items-center gap-4 space-x-3">
                     <select name="role" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
                         <option value="" selected="selected">- Select user type-</option>
@@ -47,7 +45,7 @@ const AddUserForm = ({closeModal}) => {
                 </div>
                 <div className='p-1 flex items-center gap-4 space-x-3'>
                     <input type='text' name='lastname' required placeholder='Enter Lastname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-                    <input type='text' name='account_id' required placeholder='Enter ID' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <input type='text' name='account_id' required placeholder='Staff ID/Matric No.' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
 
                 <div className=" p-1  flex items-center gap-4 ">

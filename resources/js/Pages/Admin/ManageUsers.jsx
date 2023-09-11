@@ -6,6 +6,7 @@ import CustomModal from '@/Components/CustomModal2';
 import AddUserForm from '@/Components/AddUserForm';
 import DeleteUserDialog from '@/Components/DeleteUserDialog';
 import EditUserForm from '@/Components/EditUserForm';
+import { useDebounce } from '@/hooks/Search';
 
 import React from 'react';
 export default function ManageUsers({ auth }) {
@@ -62,7 +63,7 @@ export default function ManageUsers({ auth }) {
         setUser(user);
     }
 
-    const searchUsers = async (query)=>{
+    const searchUsers = useDebounce(async (query)=>{
         try {
              const res = await axios.post(route(`api.admin.search_users`), {searchValue : query});
              console.log(res);
@@ -73,7 +74,7 @@ export default function ManageUsers({ auth }) {
          } catch (error) {
              console.log(error);
          }
-     }
+     }, 1000)
 
     return (
         <AuthenticatedLayout
@@ -141,8 +142,7 @@ export default function ManageUsers({ auth }) {
                     {isDeleteUser &&
                         <CustomModal 
                             closeModal={closeModal}
-                            childern={<DeleteUserDialog userID ={0} closeModal={closeModal}/>}
-                        
+                            childern={<DeleteUserDialog userID ={userID} closeModal={closeModal}/>}
                         />
                     }  
                 </div>

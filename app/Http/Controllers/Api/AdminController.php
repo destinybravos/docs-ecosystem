@@ -71,9 +71,22 @@ class AdminController extends Controller
             ], 422);
         }
 
+        if (!User::where('id', $request->user_id)->exists()) {
+            return $this->sendError("Could not find the selected user", [], 404);
+        }
+
         $user = User::where('id', $request->user_id)->first();
         if (isset($request->role)) {
             $user->role = $request->role;
+        }
+        if (isset($request->firstname)) {
+            $user->firstname = $request->firstname;
+        }
+        if (isset($request->lastname)) {
+            $user->lastname = $request->lastname;
+        }
+        if (isset($request->account_id)) {
+            $user->account_id = $request->account_id;
         }
 
         if ($user->update()) {
@@ -99,15 +112,15 @@ class AdminController extends Controller
             ], 422);
         }
 
-        try{
-            $deleteUser = User::where('id', $request->user_id)->delete();
-            if($deleteUser){
-                return $this->sendResponse("Users deleted successfully", []);
-            }else{
-                return $this->sendError('Could not delete user');
-            }
-        }catch(Throwable $th){
-            return $this->sendError($th->getMessage());
+        if (!User::where('id', $request->user_id)->exists()) {
+            return $this->sendError("Could not find the selected user", [], 404);
+        }
+
+        $deleteUser = User::where('id', $request->user_id)->delete();
+        if($deleteUser){
+            return $this->sendResponse("Users deleted successfully", []);
+        }else{
+            return $this->sendError('Could not delete user');
         }
     }
     
@@ -124,7 +137,7 @@ class AdminController extends Controller
         if (isset($request->searchValue)) {
             // if ($request->searchValue !== '') {
                 $users = User::where('account_id', $request->searchValue)->orWhere('firstname', 'LIKE', '%' . $request->searchValue . '%')
-                    ->orWhere('lastname', 'LIKE', '%' . $request->searchValue . '%')->orWhere('username', 'LIKE', '%' . $request->searchValue . '%')
+                    ->orWhere('lastname', 'LIKE', '%' . $request->searchValue . '%')
                     ->orderBy('firstname', 'ASC')->paginate(20);
             // } else {
             //     $users = User::orderBy('firstname', 'ASC')->paginate(20);

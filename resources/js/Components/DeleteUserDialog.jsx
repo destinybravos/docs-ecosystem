@@ -5,6 +5,7 @@ import Loader from '@/Components/Loader';
 const DeleteUserDialog = ({userID,closeModal}) => {
 
     const[isProcessing, setIsProcessing] = React.useState(false);
+    const[errorMsg, setErorMsg] = React.useState(null);
 
     const deleteUser = async ()=>{
         setIsProcessing(true);
@@ -16,10 +17,11 @@ const DeleteUserDialog = ({userID,closeModal}) => {
             closeModal();
         }catch(error){
             setIsProcessing(false);
-            console.log(error);
-            alert("Could not reach the server. Please try again!");
-            closeModal();
-
+            if (error.response) {
+                setErorMsg(error.response.data.message);
+            } else {
+                alert("Could not reach the server. Please try again!");
+            }
         }
     };
 
@@ -35,6 +37,7 @@ const DeleteUserDialog = ({userID,closeModal}) => {
             
             <button className="px-4 py-2  bg-red-700 rounded-sm text-white" onClick={deleteUser}>Delete</button>
         </div>
+        {errorMsg && <span className="text-red-500 text-sm" >{errorMsg}</span> }
         {isProcessing && <Loader />}
     </div>
   )
