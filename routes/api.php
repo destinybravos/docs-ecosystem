@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('fetch-departments', [AdminController::class, 'fetchDepartments'])->name('api.admin.fetch_departments');
+        Route::post('create-user', [AdminController::class, 'create_user'])->name('api.admin.create_user');
+        Route::get('fetch-users', [AdminController::class, 'fetch_users'])->name('api.admin.fetch_users');
+        Route::post('update-user', [AdminController::class, 'update_user'])->name('api.admin.update_user');
+        Route::post('delete-users', [AdminController::class, 'delete_users'])->name('api.admin.delete_users');
+        Route::post('search-users', [AdminController::class, 'search_users'])->name('api.admin.search_users');
+        Route::prefix('statistics')->group(function () {
+            // Route::post('fetch_general', [StatisticsController::class, 'fetch_general'])->name('api.fetch_general_statistics');
+        });
+    });
 });
