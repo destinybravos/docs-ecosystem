@@ -28,23 +28,24 @@ const AddUserForm = ({closeModal}) => {
     })
   }
 
+  const[userType, setUserType] = React.useState('Student');
   return (
-    <div>
+    <div className='p-5'>
         <div className='text-md font-bold'>Add User</div>
          <form onSubmit={(e)=> submitData(e) }  className="mt-4">
             <div className='flex flex-col gap-3 '>
+
                 <div className=" p-1  flex items-center gap-4 space-x-3">
-                    <select name="role" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
-                        <option value="" selected="selected">- Select user type-</option>
-                        <option value="Student">Student</option>
-                        <option value="Staff">Staff</option>
-                       
-                    </select>
                     <input type='text' name='firstname' required placeholder='Enter firstname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
-                   
+                    <input type='text' name='lastname' required placeholder='Enter Lastname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
                 <div className='p-1 flex items-center gap-4 space-x-3'>
-                    <input type='text' name='lastname' required placeholder='Enter Lastname' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+                    <select name="department_id" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
+                        <option value="" selected="selected">- Select Department-</option>
+                        <option value="1">Mechanical Engineering</option>
+                        <option value="2">Electrical Engineering</option>
+                    
+                    </select>
                     <input type='text' name='account_id' required placeholder='Staff ID/Matric No.' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
                 </div>
 
@@ -66,16 +67,36 @@ const AddUserForm = ({closeModal}) => {
                 </div>
 
                 <div className="flex items-center gap-4 mb-4 space-x-3">
+
                     <div className="w-full">
-                        <select name="department_id" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none'>
-                            <option value="" selected="selected">- Select Department-</option>
-                            <option value="1">Mechanical Engineering</option>
-                            <option value="2">Electrical Engineering</option>
-                        
+                        <select name="role" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none' onChange={(e)=>setUserType(e.target.value)}>
+                            <option value="" selected="selected">- Select user type-</option>
+                            <option value="Student">Student</option>
+                            <option value="Staff">Staff</option>
+                       
                         </select>
                     </div>  
+
                     <div className='w-full'>
-                        <input type='text' name='level' required placeholder='Enter Level' className="bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none" />
+
+                        {
+                             (userType === 'Student')?(
+                                <select name="level" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none' onChange={(e)=>setUserType(e.target.value)}>
+                                    <option value="" selected="selected">- Select level-</option>
+                                    <option value="100Level">100Level</option>
+                                    <option value="200Level">200Level</option>
+                       
+                                </select>
+                            ):(
+                                <select name="category" required className='bg-gray-100 rounded-md px-2  w-full border-0  py-2 focus-within:outline-none' onChange={(e)=>setUserType(e.target.value)}>
+                                    <option value="" selected="selected">- Select Category-</option>
+                                    <option value="Academic Staff">Academic Staff</option>
+                                    <option value="Non Academic Staff">Non Academic Staff</option>
+                   
+                                </select>
+                            )
+                        }
+                        
                     </div>
                 </div>
 

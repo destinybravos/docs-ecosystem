@@ -26,7 +26,7 @@ const DeleteUserDialog = ({userID,closeModal}) => {
     };
 
   return (
-    <div className="px-2">
+    <div className="p-5">
        
         <h2 className="font-extrabold border-b mb-4">Delete User</h2>
         <p className="text-base">Are you sure you want to delete this user?</p>

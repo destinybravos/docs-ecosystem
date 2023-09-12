@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import {FiSearch} from 'react-icons/fi'
 import AllUsersTable from '@/Components/AllUsersTable';
-import CustomModal from '@/Components/CustomModal2';
+import Modal from '@/Components/CustomModal';
 import AddUserForm from '@/Components/AddUserForm';
 import DeleteUserDialog from '@/Components/DeleteUserDialog';
 import EditUserForm from '@/Components/EditUserForm';
@@ -19,7 +19,6 @@ export default function ManageUsers({ auth }) {
     const getUsers = async ()=>{
         try {
             const res = await axios.get(route(`api.admin.fetch_users`));
-            //  setPagination(res.data.data.users);
             const users = res.data.body.users.data;
             setUsers(users);
  
@@ -67,7 +66,6 @@ export default function ManageUsers({ auth }) {
         try {
              const res = await axios.post(route(`api.admin.search_users`), {searchValue : query});
              console.log(res);
-            //  setPagination(res.data.data.users);
             const users = res.data.body.users.data;
             setUsers(users);
  
@@ -105,7 +103,7 @@ export default function ManageUsers({ auth }) {
                        
                      </div>
 
-                     <button className="rounded-md bg-primary hover:bg-[#f33636] text-sm self-start transition-all duration-300 px-6 py-2 ml-3 font-semibold text-white" onClick={openAddUser}>
+                     <button className="btn-primary text-xs sm:text-sm" onClick={openAddUser}>
                          Add User
                      </button>
                      
@@ -121,30 +119,22 @@ export default function ManageUsers({ auth }) {
                         />
                     </div>
 
-                        {/* {pagination && <div className="mt-3 flex justify-end">
-                            <Pagination pageLimit={pagination.per_page} totalRecords={pagination.total} links={pagination.links} onPageResponse={(data) => paginateResult(data)} />
-                        </div>} */}
 
-                    {isOpenAddUser && 
-                        <CustomModal 
-                            childern={<AddUserForm closeModal={closeModal}/>}
-                            closeModal ={closeModal}
-                        />
+                 
+                        <Modal show={isOpenAddUser} maxWidth="xl" onClose={() => closeModal(false)}>
+                            <AddUserForm />
+                        </Modal>
                     
-                    }
+                        <Modal show={isEditUser} maxWidth="xl" onClose={() => closeModal(false)}>
+                            <EditUserForm user={user} />
+                        </Modal>
+
+                        <Modal show={isDeleteUser} maxWidth="xl" onClose={() => closeModal(false)}>
+                            <DeleteUserDialog userID ={userID} />
+                        </Modal>
                     
-                    {isEditUser && 
-                        <CustomModal 
-                            childern={<EditUserForm user={user}  closeModal ={closeModal}/>}
-                            closeModal ={closeModal}
-                        />
-                    } 
-                    {isDeleteUser &&
-                        <CustomModal 
-                            closeModal={closeModal}
-                            childern={<DeleteUserDialog userID ={userID} closeModal={closeModal}/>}
-                        />
-                    }  
+                    
+                   
                 </div>
             </section>
         </AuthenticatedLayout>
