@@ -28,7 +28,7 @@ console.log(user);
   }
 
   return (
-    <div>
+    <div className='p-5'>
         <div className='text-md font-bold'>Edit User</div>
         <form onSubmit={(e)=> submitData(e) }  className="mt-4">
             <div className='flex flex-col gap-3 '>
