@@ -90,4 +90,17 @@ class DocumentController extends Controller
             'documents' => $documents
         ]);
     }
+
+    public function searchDocuments(Request $request){
+        if (isset($request->search_param) && $request->search_param !== null) {
+            $documents = Document::where(function($query) use ($request){
+                $query->where('doc_name', 'LIKE', '%'.$request->search_param.'%');
+            })->orderBy('doc_name', 'ASC')->paginate(10);
+        } else {
+            $documents = [];
+        }
+        return $this->sendResponse('Saved sucesfully', [
+            'documents' => $documents
+        ]);
+    }
 }
