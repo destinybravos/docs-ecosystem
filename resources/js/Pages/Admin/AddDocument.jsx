@@ -5,6 +5,7 @@ import Loader from '@/Components/Loader';
 import Pagination from '@/Components/Pagination';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
+import TextArea from '@/Components/TextArea';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
@@ -30,8 +31,8 @@ export default function AddDocument({ auth }) {
             console.log("Error::=>", err?.response?.data);   
         })
     }
-    let fetchDocuments = async () => {
-        await axios.post(route('api.fetch_documents'))
+    let fetchDocuments = async (search = null) => {
+        await axios.post(route('api.fetch_documents'), {search_param: search})
         .then((response) => {
             setDocuments(response.data.body.documents);
         })
@@ -47,7 +48,7 @@ export default function AddDocument({ auth }) {
             setSearchParam(search)
         }
         fetchDepartments();
-        fetchDocuments();
+        fetchDocuments(search);
     }, [])
 
     
@@ -113,7 +114,27 @@ export default function AddDocument({ auth }) {
                 </div>}
 
                 {/* Documents Table */}
-                
+                <div className="px-4 py-3">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {documents?.data && documents?.data.map((document) => (<li key={document.id} className="bg-white dark:bg-slate-800 dark:text-slate-300 shadow-md rounded-lg">
+                            <div className="px-3 py-2">
+                                <div className="mb-2 capitalize">
+                                    <span className="inline-block py-1 px-2 bg-primary text-white rounded-md text-xs">
+                                        { document.access_level }
+                                    </span>
+                                </div>
+                                <h2 className="text-lg font-bold mb-2">
+                                    { document.doc_name }
+                                </h2>
+                                <p>
+                                    { document?.description }
+                                </p>
+
+                            </div>
+                        </li>)
+                    )}
+                    </ul>
+                </div>
             </section>
 
 
@@ -185,6 +206,18 @@ export default function AddDocument({ auth }) {
                                     {departments && departments.map(department => (<option key={department.id} value={department.id}>{department.name}</option>))}
                                 </SelectInput>
                             </div>
+
+                            <div className="mt-4 md:col-span-2">
+                                <InputLabel htmlFor="doc_file">
+                                    <FiLayers className="inline" /> Brief Description
+                                </InputLabel>
+
+                                <TextArea
+                                    id="description"
+                                    name="description"
+                                    className="mt-1 block w-full py-2 px-2"
+                                />
+                            </div>
                             
                             <div className="mt-4">
                                 <label className="flex items-center">
@@ -194,6 +227,16 @@ export default function AddDocument({ auth }) {
                                     <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Department Only</span>
                                 </label>
                             </div>
+                            
+                            <div className="mt-4">
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        name="request_access"
+                                    />
+                                    <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Require Access Approval</span>
+                                </label>
+                            </div>
+                            
                             
                             <div className="mt-4 md:col-span-2">
                                 <PrimaryButton className="py-1 gap-x-2" disabled={processing}>

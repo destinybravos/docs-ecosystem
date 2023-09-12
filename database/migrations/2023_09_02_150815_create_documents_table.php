@@ -17,7 +17,11 @@ return new class extends Migration
             $table->enum('access_level', ['all', 'admin', 'non_ac_staff', 'ac_staff', 'all_staff'])->default('all');
             $table->foreignId('uploaded_by');
             $table->boolean('department_only')->default(true);
+            $table->boolean('request_access')->default(false);
             $table->foreignId('department_id')->nullable();
+            $table->mediumText('description')->nullable();
+            $table->integer('no_views')->nullable();
+            $table->integer('no_downloads')->nullable();
             $table->json('files');
             $table->timestamps();
         });

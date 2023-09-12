@@ -48,9 +48,9 @@ export default function Modal({ children, show = false, maxWidth = '2xl', closea
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                     <Dialog.Panel
-                        className={`md:mb-6 bg-white md:rounded-lg shadow-xl md:mt-10 transform transition-all sm:w-full sm:mx-auto ${maxWidthClass} w-full h-full md:h-auto`}
+                        className={`md:mb-6 bg-white md:rounded-lg shadow-xl md:mt-10 transform transition-all sm:w-full sm:mx-auto ${maxWidthClass} w-full h-full md:h-auto overflow-y-auto md:overflow-visible`}
                     >
-                        <div className="relative">
+                        <div className="sticky top-0 z-40 md:relative bg-inherit">
                             <button className="absolute -top-3 -right-3 bg-white rounded-full text-red-500 hidden md:block"  onClick={() => close()}>
                                 <FaTimesCircle className="h-6 w-6" />
                             </button>
