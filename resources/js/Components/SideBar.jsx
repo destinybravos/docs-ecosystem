@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react'
 import React from 'react'
-import { FaUsers } from 'react-icons/fa'
+import { FaSchool, FaUsers } from 'react-icons/fa'
 import { HiDocumentAdd } from 'react-icons/hi'
 import { RxDashboard } from 'react-icons/rx'
 
@@ -13,14 +13,19 @@ const SideBar = ({user}) => {
                     <RxDashboard className="mr-2" /> Dashboard
                 </Link>
             </li>
-            <li className={` ${route().current('add_document') && 'border-l-4 border-l-primary text-primary'}`}>
-                <Link href={route('add_document')} className={`px-6 py-2 flex items-center`}>
-                    <HiDocumentAdd className="mr-2" /> Add Documents
+            <li className={` ${route().current('document_ecosystem') && 'border-l-4 border-l-primary text-primary'}`}>
+                <Link href={route('document_ecosystem')} className={`px-6 py-2 flex items-center`}>
+                    <HiDocumentAdd className="mr-2 w-4 h-4" /> Documents
                 </Link>
             </li>
             <li className={` ${route().current('manage_users') && 'border-l-4 border-l-primary text-primary'}`}>
                 <Link href={route('manage_users')} className={`px-6 py-2 flex items-center`}>
                     <FaUsers className="mr-2" /> Manage Users
+                </Link>
+            </li>
+            <li className={` ${route().current('manage_departments') && 'border-l-4 border-l-primary text-primary'}`}>
+                <Link href={route('manage_departments')} className={`px-6 py-2 flex items-center`}>
+                    <FaSchool className="mr-2" /> Departments
                 </Link>
             </li>
         </ul>

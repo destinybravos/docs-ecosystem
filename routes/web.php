@@ -30,8 +30,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         // Admin routes
-        Route::get('/add-document', [PageController::class, 'addDocment'])->name('add_document');
+        Route::get('/document-ecosystem', [PageController::class, 'docmentEcosystem'])->name('document_ecosystem');
         Route::get('/manage-users', [PageController::class, 'manageUsers'])->name('manage_users');
+        Route::get('/manage-departments', [PageController::class, 'manageDepartments'])->name('manage_departments');
     });
 });
 

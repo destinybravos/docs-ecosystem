@@ -46,13 +46,18 @@ class PageController extends Controller
         return Inertia::render('Admin/Dashboard', []);
     }
 
-    public function addDocment(Request $request)
+    public function docmentEcosystem(Request $request)
     {
-        return Inertia::render('Admin/AddDocument', []);
+        return Inertia::render('Admin/ManageDocument', []);
     }
 
     public function manageUsers(Request $request)
     {
         return Inertia::render('Admin/ManageUsers', []);
+    }
+
+    public function manageDepartments(Request $request)
+    {
+        return Inertia::render('Admin/ManageDepartments', []);
     }
 }

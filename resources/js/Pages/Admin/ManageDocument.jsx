@@ -8,14 +8,16 @@ import SelectInput from '@/Components/SelectInput';
 import TextArea from '@/Components/TextArea';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { useDebounce } from '@/hooks/Search';
 import { Head, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { BsDownload, BsEye } from 'react-icons/bs';
 import { FaSave, FaUserTag } from 'react-icons/fa';
 import { FiLayers } from 'react-icons/fi';
 import { HiDocumentAdd } from 'react-icons/hi';
 import { MdSchool } from 'react-icons/md';
 
-export default function AddDocument({ auth }) {
+export default function ManageDocument({ auth }) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [departments, setDepartment] = useState([]);
@@ -44,9 +46,6 @@ export default function AddDocument({ auth }) {
     useEffect(() => {
         let url = new URL(location.href);
         let search = url.searchParams.get('search');
-        if (search !== undefined && search !== null && search !== '') {
-            setSearchParam(search)
-        }
         fetchDepartments();
         fetchDocuments(search);
     }, [])
@@ -74,12 +73,22 @@ export default function AddDocument({ auth }) {
         });
     }
 
+    const searchDocuments = useDebounce(async (query)=>{
+        await axios.post(route('api.fetch_documents'), {search_param: query})
+        .then((response) => {
+            setDocuments(response.data.body.documents);
+        })
+        .catch((err) => {
+            console.log("Error::=>", err?.response?.data);   
+        })
+     }, 500)
+
     return (
         <AuthenticatedLayout
             user={auth.user}
             header={<div className="flex items-center justify-between">
                 <aside className="border-b-4 py-2 border-b-primary">
-                    <h1>Add Documents</h1>
+                    <h1>Documents Ecosystem</h1>
                 </aside>
             </div>}
         >
@@ -96,6 +105,7 @@ export default function AddDocument({ auth }) {
                                 defaultValue={searchParam}
                                 placeholder="Search for a specific document"
                                 className="mt-1 block w-full"
+                                onKeyUp={(e) => searchDocuments(e.target.value) }
                             />
                         </div>
                     </aside>
@@ -126,10 +136,22 @@ export default function AddDocument({ auth }) {
                                 <h2 className="text-lg font-bold mb-2">
                                     { document.doc_name }
                                 </h2>
-                                <p>
+                                <p className="min-h-[100px]">
                                     { document?.description }
                                 </p>
-
+                                <footer className="flex items-center gap-2">
+                                    <aside>
+                                        <BsEye className='inline' /> {0}
+                                    </aside>
+                                    <aside>
+                                        <BsDownload className='inline' /> {0}
+                                    </aside>
+                                    <div className="flex-grow flex justify-end">
+                                        <button className={`btn-primary text-xs py-1 px-2`}>
+                                            View Document
+                                        </button>
+                                    </div>
+                                </footer>
                             </div>
                         </li>)
                     )}
