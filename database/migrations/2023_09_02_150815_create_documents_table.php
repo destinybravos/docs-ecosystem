@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
+            $table->string('doc_name');
             $table->enum('access_level', ['all', 'admin', 'non_ac_staff', 'ac_staff', 'all_staff'])->default('all');
             $table->foreignId('uploaded_by');
             $table->boolean('department_only')->default(true);
             $table->foreignId('department_id')->nullable();
-            $table->enum('file_type', ['image', 'video', 'document'])->default('document');
-            $table->string('file_extension');
-            $table->string('file_url');
-            $table->string('thumbnail_url')->nullable();
+            $table->json('files');
             $table->timestamps();
         });
     }

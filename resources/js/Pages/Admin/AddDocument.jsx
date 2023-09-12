@@ -1,6 +1,8 @@
 import Checkbox from '@/Components/Checkbox';
 import Modal from '@/Components/CustomModal';
 import InputLabel from '@/Components/InputLabel';
+import Loader from '@/Components/Loader';
+import Pagination from '@/Components/Pagination';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
@@ -16,12 +18,22 @@ export default function AddDocument({ auth }) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [departments, setDepartment] = useState([]);
+    const [documents, setDocuments] = useState([]);
     const [searchParam, setSearchParam] = useState(null);
 
     let fetchDepartments = async () => {
         await axios.get(route('api.admin.fetch_departments'))
         .then((response) => {
             setDepartment(response.data.body.departments);
+        })
+        .catch((err) => {
+            console.log("Error::=>", err?.response?.data);   
+        })
+    }
+    let fetchDocuments = async () => {
+        await axios.post(route('api.fetch_documents'))
+        .then((response) => {
+            setDocuments(response.data.body.documents);
         })
         .catch((err) => {
             console.log("Error::=>", err?.response?.data);   
@@ -35,12 +47,30 @@ export default function AddDocument({ auth }) {
             setSearchParam(search)
         }
         fetchDepartments();
+        fetchDocuments();
     }, [])
 
     
 
-    let submit = async ()=> {
-
+    let submit = async (e)=> {
+        e.preventDefault();
+        setProcessing(true);
+        let form = new FormData(e.target);
+        await axios.post(route('api.save_document'), form)
+        .then((response)=> {
+            setProcessing(false);
+            if (response.data.success) {
+                setDocuments(response.data.body.documents)
+                e.target.reset();
+                setShowAddModal(false);
+                alert(response.data.message);
+            }
+        })
+        .catch((error)=> {
+            setProcessing(false);
+            alert(error.response.data.message);
+            console.log(error.response.data.message);
+        });
     }
 
     return (
@@ -78,7 +108,12 @@ export default function AddDocument({ auth }) {
 
             <section>
                 {/* Your Codes goes here */}
+                {documents && <div className="my-6 flex justify-end">
+                    <Pagination pageLimit={documents.per_page} totalRecords={documents.total} links={documents.links} onPageResponse={(data) => setDocuments(data.documents)} />
+                </div>}
 
+                {/* Documents Table */}
+                
             </section>
 
 
@@ -86,7 +121,7 @@ export default function AddDocument({ auth }) {
             {/* Modals */}
             <Modal show={showAddModal} maxWidth="xl" onClose={() => setShowAddModal(false)}>
                 <section className="px-4 py-3">
-                    <form onSubmit={submit}>
+                    <form onSubmit={submit} encType='multipart/form-data'>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="mt-4">
                                 <InputLabel htmlFor="doc_name">
@@ -96,13 +131,14 @@ export default function AddDocument({ auth }) {
                                 <TextInput
                                     id="doc_name"
                                     type="text"
+                                    required
                                     name="doc_name"
                                     className="mt-1 block w-full"
                                     placeholder="Enter Document Name"
                                 />
                             </div>
                             <div className="mt-4">
-                                <InputLabel htmlFor="doc_name">
+                                <InputLabel htmlFor="access_by">
                                     <FaUserTag className="inline" /> To Be Accessed By
                                 </InputLabel>
 
@@ -120,27 +156,30 @@ export default function AddDocument({ auth }) {
                                 </SelectInput>
                             </div>
                             <div className="mt-4">
-                                <InputLabel htmlFor="doc_name">
+                                <InputLabel htmlFor="doc_file">
                                     <FiLayers className="inline" /> Upload File
                                 </InputLabel>
 
                                 <TextInput
-                                    id="access_by"
-                                    name="access_by"
-                                    type="file"
+                                    id="doc_file"
+                                    name="doc_file[]"
+                                    type="file" 
+                                    required
+                                    multiple
                                     className="mt-1 block w-full py-2 px-2"
                                 />
                             </div>
                             <div className="mt-4">
-                                <InputLabel htmlFor="doc_name">
+                                <InputLabel htmlFor="department_id">
                                     <MdSchool className="inline" /> Department
                                 </InputLabel>
 
                                 <SelectInput
-                                    id="access_by"
-                                    name="access_by"
+                                    id="department_id"
+                                    name="department_id"
                                     className="mt-1 block w-full"
                                     defaultValue={``}
+                                    required
                                 >
                                     <option value="">Select Department</option>
                                     {departments && departments.map(department => (<option key={department.id} value={department.id}>{department.name}</option>))}
@@ -158,7 +197,7 @@ export default function AddDocument({ auth }) {
                             
                             <div className="mt-4 md:col-span-2">
                                 <PrimaryButton className="py-1 gap-x-2" disabled={processing}>
-                                    <FaSave className="w-6 h-6" /> Save Document
+                                    { processing ? <Loader className="w-6 h-6" /> : <><FaSave className="w-6 h-6" /> Save Document</> }
                                 </PrimaryButton>
                             </div>
                         </div>

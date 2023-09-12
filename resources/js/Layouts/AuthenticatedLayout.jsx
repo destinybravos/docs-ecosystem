@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { RiAlignLeft } from 'react-icons/ri'
 import { FaRegBell } from 'react-icons/fa'
 import { RxDashboard } from 'react-icons/rx'
-import { BiCalendar } from 'react-icons/bi'
+import { BiCalendar, BiSearch } from 'react-icons/bi'
 import { BiTimeFive } from 'react-icons/bi'
 import { MdPointOfSale } from 'react-icons/md'
 import { MdOutlineInventory2 } from 'react-icons/md'
@@ -15,10 +15,13 @@ import Dropdown from '@/Components/Dropdown';
 import { Link, Head } from '@inertiajs/react';
 import avatar from './../Assets/avatar.svg';
 import SideBar from '@/Components/SideBar';
+import Modal from '@/Components/CustomModal';
+import SearchPage from '@/Pages/Admin/SearchPage';
 
 export default function Authenticated({ user, header, children }) {
     const [dateState, setDateState] = useState(new Date());
     const [nav_open, openNav] = useState(false);
+    const [openSearch, setSearchModal] = useState(false);
 
     useEffect(() => {
            setInterval(() => setDateState(new Date()), 1000);
@@ -90,6 +93,12 @@ export default function Authenticated({ user, header, children }) {
                             </aside>
                             <aside className="flex items-center divide-x gap-x-2">
                                 <div aria-label="top-right-icons" className="md:px-2 flex items-center gap-5">
+                                    <div className="relative">
+                                        <aside className="flex items-center">
+                                            <input type="text" readOnly onClick={() => setSearchModal(true)} className="h-8 py-2 pr-8 rounded-lg outline-none ring-0 focus:ring-0 focus:outline-none border border-primary w-40 md:w-48" placeholder="Search Ecosystem" />
+                                            <BiSearch size={20} className="absolute right-2" />
+                                        </aside>
+                                    </div>
                                     <button className="relative">
                                         <FaRegBell size={20} />
                                         <div className="absolute h-4 w-4 -top-2 -left-1 rounded-full bg-primary text-[0.6rem] flex items-center justify-center text-white p-1">
@@ -156,6 +165,10 @@ export default function Authenticated({ user, header, children }) {
                     </div>
                 </section>
             </div>
+
+            <Modal show={openSearch} onClose={() => setSearchModal(false)}>
+                <SearchPage />
+            </Modal>
         </>
     );
 }

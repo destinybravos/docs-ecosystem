@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\DocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,12 @@ use App\Http\Controllers\Api\AdminController;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::prefix('documents')->group(function () {
+        Route::post('save', [DocumentController::class, 'saveDocument'])->name('api.save_document');
+        Route::post('fetch-all', [DocumentController::class, 'fetchDocuments'])->name('api.fetch_documents');
+    });
+
     Route::prefix('admin')->group(function () {
         Route::get('fetch-departments', [AdminController::class, 'fetchDepartments'])->name('api.admin.fetch_departments');
         Route::post('create-user', [AdminController::class, 'create_user'])->name('api.admin.create_user');
