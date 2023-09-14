@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Document;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -61,8 +62,13 @@ class PageController extends Controller
         return Inertia::render('Admin/ManageDepartments', []);
     }
 
-    public function viewDocument(Request $request)
+    public function viewDocument(Request $request, $doc_id)
     {
-        return Inertia::render('Admin/Document', []);
+        $document = Document::where('id', $doc_id)->with(['department', 'user'])->first();
+        $document->no_views += 1;
+        $document->update();
+        return Inertia::render('Admin/Document', [
+            'document' => $document
+        ]);
     }
 }

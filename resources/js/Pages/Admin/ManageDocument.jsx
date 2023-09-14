@@ -139,12 +139,12 @@ export default function ManageDocument({ auth }) {
                                 <p className="text-sm line-clamp-3 mb-3">
                                     { document?.description }
                                 </p>
-                                <footer className="flex items-center gap-2">
+                                <footer className="flex items-center gap-3 text-sm">
                                     <aside>
-                                        <BsEye className='inline' /> {0}
+                                        <BsEye className='inline' /> {document.no_views ? document.no_views : 0}
                                     </aside>
                                     <aside>
-                                        <BsDownload className='inline' /> {0}
+                                        <BsDownload className='inline' /> {document.no_downloads ? document.no_downloads : 0}
                                     </aside>
                                     <div className="flex-grow flex justify-end">
                                         <Link href={route('document.view', [document.id])} className={`btn-primary text-xs py-1 px-2`}>

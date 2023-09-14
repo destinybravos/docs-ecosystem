@@ -20,8 +20,8 @@ return new class extends Migration
             $table->boolean('request_access')->default(false);
             $table->foreignId('department_id')->nullable();
             $table->mediumText('description')->nullable();
-            $table->integer('no_views')->nullable();
-            $table->integer('no_downloads')->nullable();
+            $table->integer('no_views')->nullable()->default(0);
+            $table->integer('no_downloads')->nullable()->default(0);
             $table->json('files');
             $table->timestamps();
         });

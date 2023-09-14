@@ -58,7 +58,7 @@ class DocumentController extends Controller
             $document = new Document();
             $document->uploaded_by = $request->user()->id;
             $document->doc_name = $request->doc_name;
-            $document->files = json_encode($files);
+            $document->files = $files;
             $document->department_id = $request->department_id;
             $document->access_level = $request->access_by;
             $document->description = $request->description;
