@@ -9,7 +9,7 @@ import TextArea from '@/Components/TextArea';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useDebounce } from '@/hooks/Search';
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { BsDownload, BsEye } from 'react-icons/bs';
 import { FaSave, FaUserTag } from 'react-icons/fa';
@@ -92,7 +92,7 @@ export default function ManageDocument({ auth }) {
                 </aside>
             </div>}
         >
-            <Head title="Manage Users" />
+            <Head title="Manage Documents" />
 
             <section>
                 <div className="flex items-center gap-3 justify-between md:px-4">
@@ -125,7 +125,7 @@ export default function ManageDocument({ auth }) {
 
                 {/* Documents Table */}
                 <div className="px-4 py-3">
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {documents?.data && documents?.data.map((document) => (<li key={document.id} className="bg-white dark:bg-slate-800 dark:text-slate-300 shadow-md rounded-lg">
                             <div className="px-3 py-2">
                                 <div className="mb-2 capitalize">
@@ -133,10 +133,10 @@ export default function ManageDocument({ auth }) {
                                         { document.access_level }
                                     </span>
                                 </div>
-                                <h2 className="text-lg font-bold mb-2">
+                                <h2 className="text-lg font-bold mb-2 line-clamp-2">
                                     { document.doc_name }
                                 </h2>
-                                <p className="min-h-[100px]">
+                                <p className="text-sm line-clamp-3 mb-3">
                                     { document?.description }
                                 </p>
                                 <footer className="flex items-center gap-2">
@@ -147,9 +147,9 @@ export default function ManageDocument({ auth }) {
                                         <BsDownload className='inline' /> {0}
                                     </aside>
                                     <div className="flex-grow flex justify-end">
-                                        <button className={`btn-primary text-xs py-1 px-2`}>
+                                        <Link href={route('document.view', [document.id])} className={`btn-primary text-xs py-1 px-2`}>
                                             View Document
-                                        </button>
+                                        </Link>
                                     </div>
                                 </footer>
                             </div>
@@ -161,7 +161,7 @@ export default function ManageDocument({ auth }) {
 
 
 
-            {/* Modals */}
+            {/* Modals Add Document */}
             <Modal show={showAddModal} maxWidth="xl" onClose={() => setShowAddModal(false)}>
                 <section className="px-4 py-3">
                     <form onSubmit={submit} encType='multipart/form-data'>

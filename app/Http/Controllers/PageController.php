@@ -60,4 +60,9 @@ class PageController extends Controller
     {
         return Inertia::render('Admin/ManageDepartments', []);
     }
+
+    public function viewDocument(Request $request)
+    {
+        return Inertia::render('Admin/Document', []);
+    }
 }

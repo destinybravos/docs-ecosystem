@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Document;
+use App\Models\Department;
 use App\Utils\ImageUploader;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ResponseController;
-use App\Models\Department;
 
 class DocumentController extends Controller
 {
@@ -60,7 +61,9 @@ class DocumentController extends Controller
             $document->files = json_encode($files);
             $document->department_id = $request->department_id;
             $document->access_level = $request->access_by;
+            $document->description = $request->description;
             $document->department_only = filter_var($request->department_only, FILTER_VALIDATE_BOOL);
+            $document->request_access = filter_var($request->department_only, FILTER_VALIDATE_BOOL);
             
             if ($document->save()) {
                 $documents = Document::orderBy('doc_name', 'ASC')->paginate(30);
