@@ -1,5 +1,5 @@
 import { useDebounce } from '@/hooks/Search'
-import React from 'react'
+import React, { useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 
 const SearchPage = () => {
