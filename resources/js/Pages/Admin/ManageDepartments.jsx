@@ -139,65 +139,7 @@ export default function Dashboard({ auth }) {
                         <h1 className="font-bold uppercase">Departments</h1>
                         <div className='rounded-md shadow bg-white h-[350px] overflow-y-auto p-4'>
 
-                            {/* <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    1
-                                </div>
-                                <h1 className="ml-2 font-semibold">Mechatronics Engineering</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                    <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    2
-                                </div>
-                                <h1 className="ml-2 font-semibold">Agricultural Science</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                    <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group  mb-2">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    3
-                                </div>
-                                <h1 className="ml-2 font-semibold">Computer Science</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                    <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    4
-                                </div>
-                                <h1 className="ml-2 font-semibold">Medicine & Surgery</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                    <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    4
-                                </div>
-                                <h1 className="ml-2 font-semibold">Medicine & Surgery</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                    <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    4
-                                </div>
-                                <h1 className="ml-2 font-semibold">Medicine & Surgery</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                    <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>*/}
+                            
                              {
                                 departments && departments.map((department,i)=>(
                                 <div key={i} className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">

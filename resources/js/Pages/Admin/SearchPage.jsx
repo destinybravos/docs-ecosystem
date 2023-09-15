@@ -22,6 +22,30 @@ const SearchPage = () => {
  }, 500)
 
 
+ const renderDocumentIcon = (document)=>{
+ if(document.type =='image'){
+  return document.path;
+ }
+
+ if(document.ext == 'docx'){
+      return wordIcon;
+ }
+
+ if(document.ext == 'pdf'){
+  return pdfIcon
+ }
+
+ if(document.ext == 'xlsx'){
+  return excelIcon
+ }
+
+ if(document.ext == 'pptx'){
+  return pPointIcon
+ }
+}
+
+
+
   return (
     <section>
         <div className="relative">
@@ -39,10 +63,8 @@ const SearchPage = () => {
                 <div className="flex gap-2 items-start">
                     {/* Icon */}
                     <aside>
-                        {document.files[0].type}
-                        {document.files[0].ext}
-                        {document.files[0].path + document.files[0].name}
-                        <img src={wordIcon} alt="doc" className="h-10 mx-auto" />
+                      
+                        <img src={renderDocumentIcon(document.files[0])} alt="doc" className="h-10 mx-auto" />
                     </aside>
                     {/* Details */}
                     <aside className="flex-grow">
