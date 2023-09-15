@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import wordIcon from '@/Assets/Images/wordIcon.png';
+import pdfIcon from '@/Assets/Images/pdfIcon.png';
+import excelIcon from '@/Assets/Images/excelIcon.png';
+import pPointIcon from '@/Assets/Images/ppoint.png';
 import { BiArrowBack, BiBookOpen } from 'react-icons/bi';
 import { BsDownload, BsEye } from 'react-icons/bs';
 import Modal from '@/Components/CustomModal';
@@ -40,6 +43,31 @@ const Document = ({auth, document, document_list}) => {
         document.no_downloads += 1;
         axios.post(route('api.increament.download'), {document_id: document.id});
     }
+
+   
+
+
+    const renderDocumentIcon = (document)=>{
+       if(document.type =='image'){
+        return document.path;
+       }
+
+       if(document.ext == 'docx'){
+            return wordIcon;
+       }
+
+       if(document.ext == 'pdf'){
+        return pdfIcon
+       }
+
+       if(document.ext == 'xlsx'){
+        return excelIcon
+       }
+
+       if(document.ext == 'pptx'){
+        return pPointIcon
+       }
+    }
     
 
     return (
@@ -66,7 +94,7 @@ const Document = ({auth, document, document_list}) => {
                         <section className="flex flex-col md:flex-row justify-center item-start gap-4">
                             {/* Thumbnail */}
                             <aside className="flex-shrink-0">
-                                <img src={wordIcon} alt="doc" className="h-44 mx-auto" />
+                                <img src={renderDocumentIcon(document.files[0])} alt="doc" className="h-44 mx-auto" />
                             </aside>
                             {/* Document Description */}
                             <aside className='flex-grow px-2'>
@@ -141,7 +169,8 @@ const Document = ({auth, document, document_list}) => {
                                     <div className="flex gap-2 items-start">
                                         {/* Icon */}
                                         <aside>
-                                            <img src={wordIcon} alt="doc" className="h-10 mx-auto" />
+                                          
+                                            <img src={renderDocumentIcon(doc.files[0])} alt="doc" className="h-10 mx-auto" />
                                         </aside>
                                         {/* Details */}
                                         <aside className="flex-grow">

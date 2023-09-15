@@ -1,21 +1,60 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import wordIcon from '@/Assets/Images/wordIcon.png';
+import pdfIcon from '@/Assets/Images/pdfIcon.png';
+import excelIcon from '@/Assets/Images/excelIcon.png';
+import pPointIcon from '@/Assets/Images/ppoint.png';
 import { BsDownload, BsEye } from 'react-icons/bs';
 import { FaUsers } from 'react-icons/fa';
 import { HiDocument, HiUsers } from 'react-icons/hi';
 
 export default function Dashboard({ auth, statistics }) {
+    const [faculties, setFaculties] = useState(null);
     const fetchStatistics = async () => {
         await axios.get(route('api.fetch_statistics'))
         .then((res) => {
             console.log(res.data);
         })
     }
+
+    const fetchFaculties = async (e) =>{
+     
+        try{
+           const res = await axios.get(route('api.admin.fetch_faculties'));
+           const faculties = res.data.body.faculties;
+           setFaculties(faculties);
+        }catch(error){
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         console.log(statistics);
+        fetchFaculties();
     }, [])
+
+    const renderDocumentIcon = (document)=>{
+       if(document.type =='image'){
+        return document.path;
+       }
+
+       if(document.ext == 'docx'){
+            return wordIcon;
+       }
+
+       if(document.ext == 'pdf'){
+        return pdfIcon
+       }
+
+       if(document.ext == 'xlsx'){
+        return excelIcon
+       }
+
+       if(document.ext == 'pptx'){
+        return pPointIcon
+       }
+    }
     
     return (
         <AuthenticatedLayout
@@ -82,7 +121,7 @@ export default function Dashboard({ auth, statistics }) {
             </section>
 
             <section className="mb-8 px-4">
-                <div className="grid grid-cols-1 lg:grid-cols-2">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-5">
                     {/* Most Viewed docuuments */}
                     <aside className="bg-white rounded-t-md">
                         <div>
@@ -94,7 +133,8 @@ export default function Dashboard({ auth, statistics }) {
                                     <div className="flex gap-2 items-start">
                                         {/* Icon */}
                                         <aside>
-                                            <img src={wordIcon} alt="doc" className="h-10 mx-auto" />
+                                          
+                                            <img src={renderDocumentIcon(doc.files[0])} alt="doc" className="h-10 mx-auto" />
                                         </aside>
                                         {/* Details */}
                                         <aside className="flex-grow">
@@ -120,6 +160,25 @@ export default function Dashboard({ auth, statistics }) {
                             </ul>
                         </div>
                     </aside>
+
+                    <div className="">
+                        <h1 className="font-bold uppercase">Faculties</h1>
+                        <div className='rounded-md shadow bg-white  p-4 max-h-[350px] overflow-y-auto'>
+
+                        {
+                            faculties && faculties.map((faculties,i)=>(
+                            <div key={i} className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
+                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
+                                    {i +1}
+                                </div>
+                                <h1 className="ml-2 font-semibold">{faculties.name}</h1>
+                               
+                            </div>  
+                            ))
+                        }
+                        </div>
+
+                    </div>
                 </div>
             </section>
         </AuthenticatedLayout>
