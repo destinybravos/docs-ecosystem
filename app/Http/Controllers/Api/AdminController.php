@@ -150,8 +150,10 @@ class AdminController extends Controller
         $faculty = new Faculty();
         $faculty->name = $request->faculty_name;
         if($faculty->save()){
+            $faculties = Faculty::all();
             return $this->sendResponse("Faculty saved successfully", [
-                'status' => true
+                'status' => true,
+                'faculties'=>$faculties
             ]);
         }else{
             return $this->sendError('Could not save faculty',[
@@ -167,8 +169,10 @@ class AdminController extends Controller
         $dept->faculty_id = $request->faculty_id;
         $dept->type = $request->type;
         if($dept->save()){
+            $departments = Department::all();
             return $this->sendResponse("Department saved successfully", [
-                'status' => true
+                'status' => true,
+                'departments'=>$departments
             ]);
         }else{
             return $this->sendError('Could not save department',[
