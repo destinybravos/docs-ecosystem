@@ -32,6 +32,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('update-user', [AdminController::class, 'update_user'])->name('api.admin.update_user');
         Route::post('delete-users', [AdminController::class, 'delete_users'])->name('api.admin.delete_users');
         Route::post('search-users', [AdminController::class, 'search_users'])->name('api.admin.search_users');
+        Route::post('save-faculty', [AdminController::class, 'save_faculty'])->name('api.admin.save_faculty');
+        Route::post('save-department', [AdminController::class, 'save_department'])->name('api.admin.save_department');
+        Route::get('fetch-faculties', [AdminController::class, 'fetch_faculties'])->name('api.admin.fetch_faculties');
+        Route::get('fetch-department', [AdminController::class, 'fetchDepartments'])->name('api.admin.fetch_departments');
         Route::prefix('statistics')->group(function () {
             // Route::post('fetch_general', [StatisticsController::class, 'fetch_general'])->name('api.fetch_general_statistics');
         });
