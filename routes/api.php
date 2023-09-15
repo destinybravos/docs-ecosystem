@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('save', [DocumentController::class, 'saveDocument'])->name('api.save_document');
         Route::post('fetch-all', [DocumentController::class, 'fetchDocuments'])->name('api.fetch_documents');
         Route::post('search-ecosystem', [DocumentController::class, 'searchDocuments'])->name('api.search_documents');
+        Route::post('increase-doc-downlaod', [DocumentController::class, 'increaseDocuments'])->name('api.increament.download');
     });
 
     Route::prefix('admin')->group(function () {

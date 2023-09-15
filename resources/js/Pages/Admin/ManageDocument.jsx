@@ -148,7 +148,7 @@ export default function ManageDocument({ auth }) {
                                     </aside>
                                     <div className="flex-grow flex justify-end">
                                         <Link href={route('document.view', [document.id])} className={`btn-primary text-xs py-1 px-2`}>
-                                            View Document
+                                            <BsEye className='inline mr-1' size={16} /> View
                                         </Link>
                                     </div>
                                 </footer>

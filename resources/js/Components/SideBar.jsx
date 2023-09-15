@@ -13,7 +13,7 @@ const SideBar = ({user}) => {
                     <RxDashboard className="mr-2" /> Dashboard
                 </Link>
             </li>
-            <li className={` ${route().current('document_ecosystem') && 'border-l-4 border-l-primary text-primary'}`}>
+            <li className={` ${(route().current('document_ecosystem') || route().current('document.view')) && 'border-l-4 border-l-primary text-primary'}`}>
                 <Link href={route('document_ecosystem')} className={`px-6 py-2 flex items-center`}>
                     <HiDocumentAdd className="mr-2 w-4 h-4" /> Documents
                 </Link>

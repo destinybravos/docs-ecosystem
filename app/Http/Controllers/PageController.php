@@ -65,10 +65,12 @@ class PageController extends Controller
     public function viewDocument(Request $request, $doc_id)
     {
         $document = Document::where('id', $doc_id)->with(['department', 'user'])->first();
+        $documentList = Document::where('id', '!=', $doc_id)->with(['department', 'user'])->take(5)->get();
         $document->no_views += 1;
         $document->update();
         return Inertia::render('Admin/Document', [
-            'document' => $document
+            'document' => $document,
+            'document_list' => $documentList
         ]);
     }
 }

@@ -94,6 +94,15 @@ class DocumentController extends Controller
         ]);
     }
 
+    public function increaseDocuments(Request $request){
+        $document = Document::where('id', $request->document_id)->first();
+        $document->no_downloads += 1;
+        $document->update();
+        return $this->sendResponse('Updated sucesfully', [
+            'document' => $document
+        ]);
+    }
+
     public function searchDocuments(Request $request){
         if (isset($request->search_param) && $request->search_param !== null) {
             $documents = Document::where(function($query) use ($request){

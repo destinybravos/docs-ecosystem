@@ -20,7 +20,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "react-icons": "^4.10.1",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "react-file-viewer-extended": "^2.1.0",
+        "react-icons": "^4.10.1"
     }
 }

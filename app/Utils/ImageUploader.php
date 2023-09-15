@@ -66,7 +66,8 @@ class ImageUploader
         // If file is an image, save it as webp format
         if ($fileType['type'] === 'image') {
             //prepare the file to be stored
-            $nameToStore = str_replace(' ', '_', $filename) . '_'. time() .'.webp';
+            $nameToStore = str_replace(' ', '_', $filename) . '_'. time() . '.' . $fileType['ext'];
+            // $nameToStore = str_replace(' ', '_', $filename) . '_'. time() .'.webp';
             //upload the file
             $image_resize = Image::make($file->getRealPath());
             // To resize the image to a width of 600 and constrain aspect ratio (auto height)

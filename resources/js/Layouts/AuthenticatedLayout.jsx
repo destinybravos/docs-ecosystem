@@ -13,7 +13,7 @@ import { FaUsersCog, FaUsers } from 'react-icons/fa'
 import logo from '@/Assets/Images/logo.png';
 import Dropdown from '@/Components/Dropdown';
 import { Link, Head } from '@inertiajs/react';
-import avatar from './../Assets/avatar.svg';
+import avatar from '@/Assets/avatar.svg';
 import SideBar from '@/Components/SideBar';
 import Modal from '@/Components/CustomModal';
 import SearchPage from '@/Pages/Admin/SearchPage';
