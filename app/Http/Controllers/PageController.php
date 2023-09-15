@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
-use App\Models\Document;
+use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Document;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -44,7 +45,22 @@ class PageController extends Controller
 
     public function dashboard(Request $request)
     {
-        return Inertia::render('Admin/Dashboard', []);
+        $no_students = User::where('role', 'student')->count();
+        $no_staff = User::where('role', 'staff')->count();
+        $no_documents = Document::count();
+        $no_downloads = Document::sum('no_downloads');
+        $departments = Department::orderBy('name', 'ASC')->get();
+        $documents = Document::orderBy('updated_at', 'DESC')->orderBy('no_views', 'ASC')->orderBy('no_downloads')->take(5)->get();
+        return Inertia::render('Admin/Dashboard', [
+            'statistics' => [
+                'no_students' => $no_students,
+                'no_staff' => $no_staff,
+                'no_documents' => $no_documents,
+                'no_downloads' => $no_downloads,
+                'departments' => $departments,
+                'documents' => $documents
+            ]
+        ]);
     }
 
     public function docmentEcosystem(Request $request)

@@ -4,6 +4,9 @@ import React, { useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 import { BsDownload, BsEye } from 'react-icons/bs';
 import wordIcon from '@/Assets/Images/wordIcon.png';
+import pdfIcon from '@/Assets/Images/pdfIcon.png';
+import excelIcon from '@/Assets/Images/excelIcon.png';
+import pPointIcon from '@/Assets/Images/ppoint.png';
 
 const SearchPage = () => {
   const [documents, setDocuments] = useState([]);
@@ -36,6 +39,9 @@ const SearchPage = () => {
                 <div className="flex gap-2 items-start">
                     {/* Icon */}
                     <aside>
+                        {document.files[0].type}
+                        {document.files[0].ext}
+                        {document.files[0].path + document.files[0].name}
                         <img src={wordIcon} alt="doc" className="h-10 mx-auto" />
                     </aside>
                     {/* Details */}

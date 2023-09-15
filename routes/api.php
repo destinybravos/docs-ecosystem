@@ -36,8 +36,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('save-department', [AdminController::class, 'save_department'])->name('api.admin.save_department');
         Route::get('fetch-faculties', [AdminController::class, 'fetch_faculties'])->name('api.admin.fetch_faculties');
         Route::get('fetch-department', [AdminController::class, 'fetchDepartments'])->name('api.admin.fetch_departments');
-        Route::prefix('statistics')->group(function () {
-            // Route::post('fetch_general', [StatisticsController::class, 'fetch_general'])->name('api.fetch_general_statistics');
-        });
+        Route::get('fetch_general', [AdminController::class, 'fetchDashboardStats'])->name('api.fetch_statistics');
     });
 });

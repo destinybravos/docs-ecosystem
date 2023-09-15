@@ -72,7 +72,7 @@ const Document = ({auth, document, document_list}) => {
                             <aside className='flex-grow px-2'>
                                 <h1 className="font-bold text-2xl flex mb-33 items-start mb-4">
                                     <aside className="flex-grow">
-                                        { document?.doc_name } Lorem ipsum dolor, sit amet consectetur adipisicing 
+                                        { document?.doc_name }
                                     </aside>
                                 </h1>
                                 <div className="mb-2 capitalize flex gap-2 items-center">

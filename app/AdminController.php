@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ResponseController;
+use App\Models\Document;
 use App\Models\Faculty;
 
 class AdminController extends Controller
@@ -189,6 +190,22 @@ class AdminController extends Controller
         return $this->sendResponse("Faculties fetch successfully.", [
             'status' =>true,
             'faculties' => $faculties
+        ]);
+    }
+
+    public function fetchDashboardStats(Request $request)
+    {
+        $no_students = User::where('role', 'student')->count();
+        $no_staff = User::where('role', 'staff')->count();
+        $documents = Document::count();
+        $no_downloads = Document::sum('no_downloads');
+        return $this->sendResponse("Faculties fetch successfully.", [
+            'statistics' => [
+                'no_students' => $no_students,
+                'no_staff' => $no_staff,
+                'no_documents' => $documents,
+                'no_downloads' => $no_downloads
+            ]
         ]);
     }
 }
