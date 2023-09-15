@@ -133,7 +133,6 @@ export default function Dashboard({ auth, statistics }) {
                                     <div className="flex gap-2 items-start">
                                         {/* Icon */}
                                         <aside>
-                                          
                                             <img src={renderDocumentIcon(doc.files[0])} alt="doc" className="w-10 mx-auto" />
                                         </aside>
                                         {/* Details */}

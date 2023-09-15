@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use Throwable;
 use App\Models\User;
+use App\Models\Faculty;
 use App\Models\Department;
+use App\Utils\ImageUploader;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ResponseController;
-use App\Models\Faculty;
 
 class AdminController extends Controller
 {
@@ -33,6 +34,15 @@ class AdminController extends Controller
             ], 422);
         }
 
+        // validate and upload profile image
+        $profile_photo = null;
+        if ($request->hasFile('avatar')) {
+            $imageUpload = ImageUploader::UploadImage($request->file('avatar'), 'profile/images');
+            if ($imageUpload['status']) {
+                $profile_photo = $imageUpload['path'] . $imageUpload['name'];
+            }
+        }
+
         $user = new User;
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
@@ -40,8 +50,10 @@ class AdminController extends Controller
         $user->role = $request->role;
         $user->email = $request->email;
         $user->phone = $request->phone;
+        $user->avatar = $profile_photo;
         $user->department_id = $request->department_id;
-        $user->level = $request->level;
+        $user->level = isset($request->level) ? $request->level : null;
+        $user->staff_type = isset($request->category) ? $request->category : null;
         $user->password = Hash::make('12345678');
         if ($user->save()) {
             return $this->sendResponse('User created successfully', [

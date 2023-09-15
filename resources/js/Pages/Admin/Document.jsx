@@ -128,7 +128,7 @@ const Document = ({auth, document, document_list, permision}) => {
                                     <h4 className="text-sm text-red-500 mb-2">
                                         { (document.request_access && document.access_granted == 'no_permission') ? 
                                             <span>You require permission to download this document</span> : 
-                                            (document.request_access && document.access_granted != 'granted') && 
+                                            (document.request_access && document.access_granted != 'granted' && auth.user.role != 'admin') && 
                                                 <span>
                                                     Your request status is <strong>"{auth.user.role == 'admin' ? 'no permission needed' : document.access_granted}".</strong> Kindly contact the department administrator or the relevant 
                                                     authority.

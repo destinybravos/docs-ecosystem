@@ -33,7 +33,7 @@ const AllUsersTable = ({openEditUserForm, openDeleteUser,getUserID,getUser,users
                         </td>
 
                         <td className="flex items-center sm:p-2 pr-12 pl-4 py-4">
-                            <img s src={user.avatar ? user.avatar : avatar} className="w-[45px] h-[45px] object-cover rounded-full mr-4"/>
+                            <img src={user.avatar ? user.avatar : avatar} className="w-[45px] h-[45px] object-cover rounded-full mr-4"/>
                             <div>
                                 <h5 className="text-sm font-semibold text-black">{user.firstname + " "+ user.lastname}</h5>
                                 <p className="font-normal text-[13px] text-slate-500">{user.email}</p>

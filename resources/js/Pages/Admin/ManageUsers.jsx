@@ -122,7 +122,7 @@ export default function ManageUsers({ auth }) {
 
                  
                         <Modal show={isOpenAddUser} maxWidth="xl" onClose={() => closeModal(false)}>
-                            <AddUserForm />
+                            <AddUserForm closeModal={() => closeModal(false)} />
                         </Modal>
                     
                         <Modal show={isEditUser} maxWidth="xl" onClose={() => closeModal(false)}>

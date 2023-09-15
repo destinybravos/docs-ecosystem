@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone')->unique()->nullable();
             $table->foreignId('department_id')->nullable();
             $table->string('level')->nullable();
+            $table->enum('staff_type', ['Academic Staff', 'Non Academic Staff'])->nullable()->default('Academic Staff');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->nullable();
