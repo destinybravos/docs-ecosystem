@@ -36,7 +36,7 @@ export default function Dashboard({ auth, statistics }) {
 
     const renderDocumentIcon = (document)=>{
        if(document.type =='image'){
-        return document.path;
+        return document.path + document.name;
        }
 
        if(document.ext == 'docx'){
@@ -134,7 +134,7 @@ export default function Dashboard({ auth, statistics }) {
                                         {/* Icon */}
                                         <aside>
                                           
-                                            <img src={renderDocumentIcon(doc.files[0])} alt="doc" className="h-10 mx-auto" />
+                                            <img src={renderDocumentIcon(doc.files[0])} alt="doc" className="w-10 mx-auto" />
                                         </aside>
                                         {/* Details */}
                                         <aside className="flex-grow">

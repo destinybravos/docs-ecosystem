@@ -24,7 +24,7 @@ const SearchPage = () => {
 
  const renderDocumentIcon = (document)=>{
  if(document.type =='image'){
-  return document.path;
+  return document.path + document.name;
  }
 
  if(document.ext == 'docx'){
@@ -64,7 +64,7 @@ const SearchPage = () => {
                     {/* Icon */}
                     <aside>
                       
-                        <img src={renderDocumentIcon(document.files[0])} alt="doc" className="h-10 mx-auto" />
+                        <img src={renderDocumentIcon(document.files[0])} alt="doc" className="w-10 mx-auto" />
                     </aside>
                     {/* Details */}
                     <aside className="flex-grow">
