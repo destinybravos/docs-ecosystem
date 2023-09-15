@@ -38,6 +38,9 @@ export default function Dashboard({ auth }) {
         .then(res=>{    
             alert(res.data.message);
             setProcessing(false);
+            const faculties = res.data.body.faculties;
+            setFaculties(faculties);
+            setShowFacultyModal(false);
            
         })
         .catch(err=>{
@@ -56,6 +59,9 @@ export default function Dashboard({ auth }) {
         .then(res=>{    
             alert(res.data.message);
             setProcessing(false);
+            const depts = res.data.body.departments;
+            setDepartments(depts);
+            setShowDepartmentModal(false);
            
         })
         .catch(err=>{
@@ -251,7 +257,7 @@ export default function Dashboard({ auth }) {
 
                             <div className=''>
                                 <InputLabel htmlFor="type">
-                                   Select Faculty
+                                   Select Type
                                 </InputLabel>
 
 
