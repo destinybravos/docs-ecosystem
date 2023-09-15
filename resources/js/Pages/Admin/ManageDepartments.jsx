@@ -15,6 +15,8 @@ export default function Dashboard({ auth }) {
     const [showDepartmentModal, setShowDepartmentModal] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
     const [processing, setProcessing] = useState(false);
+    const [faculties, setFaculties] = useState(null);
+    const [departments, setDepartments] = useState(null);
 
     const searchDocuments = useDebounce(async (query)=>{
         await axios.post(route('api.fetch_documents'), {search_param: query})
@@ -29,15 +31,20 @@ export default function Dashboard({ auth }) {
     const submitFaculty = async (e) =>{
         e.preventDefault();
         setProcessing(true);
-        let data = new FormData(e.target);
-
-        try{
+      
+        const data = new FormData(e.target);
+    
+        axios.post(route('api.admin.save_faculty'), data)
+        .then(res=>{    
+            alert(res.data.message);
             setProcessing(false);
-        }catch{
-             setProcessing(false);
-        }
-
-        console.log(data);
+           
+        })
+        .catch(err=>{
+            setProcessing(false);
+            alert("Could not process your request at this time. Please try again!")
+            console.log(err)
+        })
     }
 
     const submitDepartment = async (e) =>{
@@ -45,14 +52,48 @@ export default function Dashboard({ auth }) {
         setProcessing(true);
         let data = new FormData(e.target);
 
-        try{
+        axios.post(route('api.admin.save_department'), data)
+        .then(res=>{    
+            alert(res.data.message);
             setProcessing(false);
-        }catch{
-             setProcessing(false);
-        }
+           
+        })
+        .catch(err=>{
+            setProcessing(false);
+            alert("Could not process your request at this time. Please try again!")
+            console.log(err)
+        })
 
-        console.log(data);
+       
     }
+
+    const fetchFaculties = async (e) =>{
+     
+        try{
+           const res = await axios.get(route('api.admin.fetch_faculties'));
+           const faculties = res.data.body.faculties;
+           setFaculties(faculties);
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    const fetchDepartments = async (e) =>{
+     
+        try{
+           const res = await axios.get(route('api.admin.fetch_departments'));
+           const faculties = res.data.body.departments;
+           setDepartments(faculties);
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    React.useEffect(()=>{
+        fetchFaculties();
+        fetchDepartments();
+    },[]);
+    
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -91,116 +132,107 @@ export default function Dashboard({ auth }) {
                 </div>
             </section>
 
-            {/* <section className='rounded-lg bg-white overflow-auto mt-8 shadow-sm shadow-white'>
-                <table className="w-full">
-                    <thead className="bg-primary text-sm font-extrabold text-white">
-                        <tr className="text-left border-b border-b-[#eef0f3] p-14">
-                            <th className="p-2"> Sn</th>
-                            <th className="p-2">Faculties</th>
-                            <th className="p-2">Departments</th>
-                            <th className="p-2">Actions</th>
-                        </tr>
-                    </thead>    
-                </table>
-            </section> */}
-
             <div className=' px-4 mt-6'>
                 <div className='flex gap-x-5'>
 
-
-                    <div className=" w-2/4">
-                        <h1 className="font-bold uppercase">Faculties</h1>
-                        <div className='rounded-md shadow bg-white grid grid-cols-2 p-4 gap-4'>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    1
-                                </div>
-                                <h1 className="ml-2 font-semibold">Engineering</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    2
-                                </div>
-                                <h1 className="ml-2 font-semibold">Environmental Design</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    3
-                                </div>
-                                <h1 className="ml-2 font-semibold">Engineering</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group">
-                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
-                                    4
-                                </div>
-                                <h1 className="ml-2 font-semibold">Engineering</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
                     <div className="w-2/4">
                         <h1 className="font-bold uppercase">Departments</h1>
-                         <div className='rounded-md shadow bg-white grid grid-cols-2 p-4 gap-4'>
+                        <div className='rounded-md shadow bg-white h-[350px] overflow-y-auto p-4'>
 
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group ">
+                            {/* <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
                                 <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
                                     1
                                 </div>
                                 <h1 className="ml-2 font-semibold">Mechatronics Engineering</h1>
                                 <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
+                                    <FaTimesCircle className="h-4 w-4 inline-block" />
                                 </button>
                             </div>
 
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group">
+                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
                                 <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
                                     2
                                 </div>
                                 <h1 className="ml-2 font-semibold">Agricultural Science</h1>
                                 <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
+                                    <FaTimesCircle className="h-4 w-4 inline-block" />
                                 </button>
                             </div>
 
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group">
+                            <div className="bg-slate-100 flex items-center relative cursor-pointer group  mb-2">
                                 <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
                                     3
                                 </div>
                                 <h1 className="ml-2 font-semibold">Computer Science</h1>
                                 <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
+                                    <FaTimesCircle className="h-4 w-4 inline-block" />
                                 </button>
                             </div>
 
-                            <div className="bg-slate-100 flex items-center relative cursor-pointer group">
+                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
                                 <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
                                     4
                                 </div>
                                 <h1 className="ml-2 font-semibold">Medicine & Surgery</h1>
                                 <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
-                                 <FaTimesCircle className="h-4 w-4 inline-block" />
+                                    <FaTimesCircle className="h-4 w-4 inline-block" />
                                 </button>
                             </div>
+
+                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
+                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
+                                    4
+                                </div>
+                                <h1 className="ml-2 font-semibold">Medicine & Surgery</h1>
+                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
+                                    <FaTimesCircle className="h-4 w-4 inline-block" />
+                                </button>
+                            </div>
+
+                            <div className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
+                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
+                                    4
+                                </div>
+                                <h1 className="ml-2 font-semibold">Medicine & Surgery</h1>
+                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
+                                    <FaTimesCircle className="h-4 w-4 inline-block" />
+                                </button>
+                            </div>*/}
+                             {
+                                departments && departments.map((department,i)=>(
+                                <div key={i} className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
+                                    <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
+                                        {i +1}
+                                    </div>
+                                    <h1 className="ml-2 font-semibold">{department.name}</h1>
+                                    <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
+                                    <FaTimesCircle className="h-4 w-4 inline-block" />
+                                    </button>
+                                </div>  
+                            ))
+                            }
                         </div>
+                    </div>
+
+                    <div className=" w-2/4">
+                        <h1 className="font-bold uppercase">Faculties</h1>
+                        <div className='rounded-md shadow bg-white  p-4 max-h-[350px] overflow-y-auto'>
+
+                        {
+                            faculties && faculties.map((faculties,i)=>(
+                            <div key={i} className="bg-slate-100 flex items-center relative cursor-pointer group mb-2">
+                                <div className='h-7 w-7  bg-primary  rounded-full text-white font-semibold flex-shrink-0 flex justify-center items-center'>
+                                    {i +1}
+                                </div>
+                                <h1 className="ml-2 font-semibold">{faculties.name}</h1>
+                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
+                                 <FaTimesCircle className="h-4 w-4 inline-block" />
+                                </button>
+                            </div>  
+                            ))
+                        }
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -248,15 +280,13 @@ export default function Dashboard({ auth }) {
 
                                 <SelectInput
                                     id="faculty"
-                                    name="faculty"
+                                    name="faculty_id"
                                     className="mt-1 block w-full"
                                 >
-                                    <option value="">Select Faculty</option>
-                                    <option value="all">All</option>
-                                    <option value="admin">Admin Only</option>
-                                    <option value="non_ac_staff">Non Acedemic Staff</option>
-                                    <option value="ac_staff">Academic Staff</option>
-                                    <option value="all_staff">All Staff</option>
+                                    <option value="" selected="selected">- Select Faculty-</option>
+                                        {faculties && faculties.map(faculty => (
+                                            <option value={faculty.id} key={faculty.id}> { faculty.name }</option>
+                                    ))}
                                 </SelectInput>
 
                                
@@ -275,15 +305,34 @@ export default function Dashboard({ auth }) {
                                     className="mt-1 block w-full"
                                     placeholder="Enter Department Name"
                                 />
-
-                               
                             </div>
-                        </div>
 
-                        <div className="mt-4">
-                            <PrimaryButton className="py-1 gap-x-2" disabled={processing}>
-                                { processing ? <Loader className="w-6 h-6" /> : <><FaSave className="w-6 h-6" /> Save Department</> }
-                            </PrimaryButton>
+                            <div className=''>
+                                <InputLabel htmlFor="type">
+                                   Select Faculty
+                                </InputLabel>
+
+
+                                <SelectInput
+                                    required
+                                    id="type"
+                                    name="type"
+                                    className="mt-1 block w-full"
+                                >
+                                    <option value="">Select Type</option>
+                                    <option value="Academic">Academic</option>
+                                    <option value="Administrative">administrative</option>
+                                </SelectInput>
+                            </div>
+
+                            <div className=''>
+                                <InputLabel >
+                                  &nbsp;
+                                </InputLabel>
+                                <PrimaryButton className="py-1 gap-x-2 mt-1" disabled={processing}>
+                                    { processing ? <Loader className="w-6 h-6" /> : <><FaSave className="w-6 h-6" /> Save Department</> }
+                                </PrimaryButton>
+                            </div>
                         </div>
                        
                     </form>

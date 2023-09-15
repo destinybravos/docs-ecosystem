@@ -16,7 +16,13 @@ class AdminController extends Controller
 {
     use ResponseController;
 
-   
+    public function fetchDepartments(){
+        $departments = Department::orderBy('name', 'ASC')->get();
+        return $this->sendResponse('Departments successfully fetched', [
+            'departments' => $departments
+        ]);
+    }
+
     public function create_user(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -183,13 +189,6 @@ class AdminController extends Controller
         return $this->sendResponse("Faculties fetch successfully.", [
             'status' =>true,
             'faculties' => $faculties
-        ]);
-    }
-
-    public function fetchDepartments(){
-        $departments = Department::orderBy('name', 'ASC')->get();
-        return $this->sendResponse('Departments successfully fetched', [
-            'departments' => $departments
         ]);
     }
 }
