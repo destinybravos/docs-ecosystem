@@ -11,6 +11,8 @@ class Document extends Model
 
     protected $casts = [
         'files' => 'array',
+        'department_only' => 'boolean',
+        'request_access' => 'boolean',
     ];
 
     public function department()

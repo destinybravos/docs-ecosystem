@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccessRequest;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Document;
@@ -84,9 +85,50 @@ class PageController extends Controller
         $documentList = Document::where('id', '!=', $doc_id)->with(['department', 'user'])->take(5)->get();
         $document->no_views += 1;
         $document->update();
-        return Inertia::render('Admin/Document', [
-            'document' => $document,
-            'document_list' => $documentList
-        ]);
+        $user = User::where('id', $request->user()->id)->with(['department'])->first();
+        $permision = [
+            'status' => 'granted',
+            'messages' => []
+        ];
+        $document->access_granted = true;
+
+        // If User is an administrator, Bypass all the permissions
+        if ($user->role == 'admin') {
+            return Inertia::render('Admin/Document', [
+                'document' => $document,
+                'document_list' => $documentList,
+                'permision' => $permision
+            ]);
+        } else {
+            // If users is a student or staff, then check if the document allows permissions
+            if ($document->department_only == true) {
+                if ($document->department_id != $user->department_id) {
+                    $permision['status'] = 'restricted';
+                    array_push($permision['messages'], 'Only users in the department of ' . $document->department->name . ' are allowed to access this document.');
+                }
+            }
+
+            if ($document->request_access == true) {
+                $document->access_granted = $this->checkIfAccessGranted($user, $document);
+            }
+
+            return Inertia::render('Admin/Document', [
+                'document' => $document,
+                'document_list' => $documentList,
+                'permision' => $permision
+            ]);
+            
+        }
     }
+
+    private function checkIfAccessGranted($user, $document) {
+        if (AccessRequest::where('user_id', $user->id)->where('document_id', $document->id)->exists()) {
+            $access = AccessRequest::where('user_id', $user->id)->where('document_id', $document->id)->first();
+            return $access->permission;
+        } else {
+            return 'no_permission';
+        }
+        
+    }
+
 }

@@ -3,12 +3,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import wordIcon from '@/Assets/Images/wordIcon.png';
 import { BiArrowBack, BiBookOpen } from 'react-icons/bi';
-import { BsDownload, BsEye } from 'react-icons/bs';
+import { BsDownload, BsEye, BsShieldExclamation } from 'react-icons/bs';
 import Modal from '@/Components/CustomModal';
 import avatar from '@/Assets/avatar.svg';
 import FilePreviewer from '@/Components/FilePreviewer';
+import { GiBrokenWall } from 'react-icons/gi';
 
-const Document = ({auth, document, document_list}) => {
+const Document = ({auth, document, document_list, permision}) => {
     const [previewMode, setPreviewMode] = useState(false);
     useEffect(() => {
         // console.log(document);
@@ -41,6 +42,9 @@ const Document = ({auth, document, document_list}) => {
         axios.post(route('api.increament.download'), {document_id: document.id});
     }
     
+    const requestAccess = async () => {
+
+    }
 
     return (
         <AuthenticatedLayout
@@ -63,7 +67,7 @@ const Document = ({auth, document, document_list}) => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <aside className="px-4 py-4 bg-white shadow-md rounded-md lg:col-span-2">
                         {/* ========= If Allowed to Access Document ========== */}
-                        <section className="flex flex-col md:flex-row justify-center item-start gap-4">
+                        { permision.status == 'granted' ? <section className="flex flex-col md:flex-row justify-center item-start gap-4">
                             {/* Thumbnail */}
                             <aside className="flex-shrink-0">
                                 <img src={wordIcon} alt="doc" className="h-44 mx-auto" />
@@ -93,12 +97,24 @@ const Document = ({auth, document, document_list}) => {
                                 </section>
 
                                 <section>
+                                    <h4 className="text-sm text-red-500 mb-2">
+                                        { (document.request_access && document.access_granted == 'no_permission') ? 
+                                            <span>You require permission to download this document</span> : 
+                                            (document.request_access && document.access_granted != 'granted') && 
+                                                <span>
+                                                    Your request status is <strong>"{auth.user.role == 'admin' ? 'no permission needed' : document.access_granted}".</strong> Kindly contact the department administrator or the relevant 
+                                                    authority.
+                                                </span> 
+                                        }
+                                    </h4>
                                     
                                     {/* Download Button */}
                                     <aside className="flex-shrink-0 flex gap-2">
-                                        <button className="btn-primary text-sm flex gap-3 items-center" onClick={() => downloadFiles()}>
+                                        { ((document.request_access && document.access_granted == 'granted') || auth.user.role == 'admin') ? (<button className="btn-primary text-sm flex gap-3 items-center" onClick={() => downloadFiles()}>
                                             <BsDownload className="w-5 h-5 inline-block" />  Download
-                                        </button>
+                                        </button>) : (<button className="bg-red-500 text-white rounded-full px-2 md:px-4 py-2 dark:text-white shadow-md text-sm flex gap-3 items-center" onClick={() => requestAccess()}>
+                                            <BsShieldExclamation className="w-5 h-5 inline-block" />  Request for Access
+                                        </button>) }
                                         <button className="btn-secondary text-sm flex gap-1 items-center" onClick={() => setPreviewMode(true)}>
                                             <BiBookOpen className="w-5 h-5 inline-block" /> Preview
                                         </button>
@@ -127,7 +143,23 @@ const Document = ({auth, document, document_list}) => {
                                     </div>
                                 </section>
                             </aside>
-                        </section>
+                        </section> : 
+                        <section>
+                            {/* If Permission is not granted */}
+                            <div className="flex min-h-[350px] items-center">
+                                <aside className="mx-auto">
+                                    <BsShieldExclamation className="mx-auto h-28 w-28 mb-7 text-red-500" />
+                                    <h2 className="text-3xl mb-4 text-center">
+                                        Access Denied
+                                    </h2>
+                                    <ul className="max-w-xl mx-auto px-4 divide-y">
+                                        {permision && permision?.messages.map((perm, index) => (<li key={perm.id} className="text-red-500 py-6">
+                                        { perm }
+                                        </li>))}
+                                    </ul>
+                                </aside>
+                            </div>
+                        </section>}
                     </aside>
 
                     {/* Other related / Most Viewed docuuments */}
