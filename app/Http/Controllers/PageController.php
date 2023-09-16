@@ -79,6 +79,11 @@ class PageController extends Controller
         return Inertia::render('Admin/ManageDepartments', []);
     }
 
+    public function manageDocAccess(Request $request)
+    {
+        return Inertia::render('Admin/ManageDocumentAccess', []);
+    }
+
     public function viewDocument(Request $request, $doc_id)
     {
         $document = Document::where('id', $doc_id)->with(['department', 'user'])->first();

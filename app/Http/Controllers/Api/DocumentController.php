@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ResponseController;
+use App\Models\AccessRequest;
 
 class DocumentController extends Controller
 {
@@ -114,5 +115,43 @@ class DocumentController extends Controller
         return $this->sendResponse('Saved sucesfully', [
             'documents' => $documents
         ]);
+    }
+
+    public function requestAccess(Request $request) {
+        if (!AccessRequest::where('document_id', $request->document_id)->where('user_id', $request->user()->id)->exists()) {
+            $access = new AccessRequest();
+            $access->document_id = $request->document_id;
+            $access->user_id = $request->user()->id;
+            if ($access->save()) {
+                return $this->sendResponse('Saved sucesfully', [
+                    'access' => $access
+                ]);
+            } else {
+                return $this->sendError('Access request was not successful due to an unexpected error.', [], 500);
+            }
+        } else {
+            $access = AccessRequest::where('document_id', $request->document_id)->where('user_id', $request->user()->id)->first();
+            return $this->sendResponse('Saved sucesfully', [
+                'access' => $access
+            ]);
+        }
+    }
+
+    public function fetchAccessRequest(Request $request){
+        $accesses = AccessRequest::orderBy('created_at', 'DESC')->with(['user', 'document'])->get();
+        return $this->sendResponse('Fetched sucesfully', [
+            'accesses' => $accesses
+        ]);
+    }
+
+    public function updateAccessRequest(Request $request){
+        if(AccessRequest::where('id', $request->access_id)->update([
+            'permission' => $request->permission
+        ])){
+            $accesses = AccessRequest::orderBy('created_at', 'DESC')->with(['user', 'document'])->get();
+            return $this->sendResponse('updated sucesfully', [
+                'accesses' => $accesses
+            ]);
+        }
     }
 }

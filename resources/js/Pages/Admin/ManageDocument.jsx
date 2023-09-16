@@ -110,9 +110,9 @@ export default function ManageDocument({ auth }) {
                         </div>
                     </aside>
                     <aside>
-                        <button className="btn-primary text-xs sm:text-sm" onClick={() => setShowAddModal(true)}>
+                    { (auth.user.role === 'admin' || auth.user.role === 'staff') && <button className="btn-primary text-xs sm:text-sm" onClick={() => setShowAddModal(true)}>
                             Add Document
-                        </button>
+                        </button>}
                     </aside>
                 </div>
             </section>

@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('fetch-all', [DocumentController::class, 'fetchDocuments'])->name('api.fetch_documents');
         Route::post('search-ecosystem', [DocumentController::class, 'searchDocuments'])->name('api.search_documents');
         Route::post('increase-doc-downlaod', [DocumentController::class, 'increaseDocuments'])->name('api.increament.download');
+        Route::post('request-access', [DocumentController::class, 'requestAccess'])->name('api.request_access');
     });
 
     Route::prefix('admin')->group(function () {
@@ -37,5 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('fetch-faculties', [AdminController::class, 'fetch_faculties'])->name('api.admin.fetch_faculties');
         Route::get('fetch-department', [AdminController::class, 'fetchDepartments'])->name('api.admin.fetch_departments');
         Route::get('fetch_general', [AdminController::class, 'fetchDashboardStats'])->name('api.fetch_statistics');
+        Route::get('fetch_access_request', [DocumentController::class, 'fetchAccessRequest'])->name('api.admin.fetch_access_request');
+        Route::post('update_access_request', [DocumentController::class, 'updateAccessRequest'])->name('api.admin.update_access_request');
     });
 });

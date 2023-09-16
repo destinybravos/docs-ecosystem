@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/document-ecosystem', [PageController::class, 'docmentEcosystem'])->name('document_ecosystem');
         Route::get('/manage-users', [PageController::class, 'manageUsers'])->name('manage_users');
         Route::get('/manage-departments', [PageController::class, 'manageDepartments'])->name('manage_departments');
+        Route::get('/manage-document-access', [PageController::class, 'manageDocAccess'])->name('manage_doc_access');
     });
 });
 

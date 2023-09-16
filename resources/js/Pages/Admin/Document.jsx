@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import wordIcon from '@/Assets/Images/wordIcon.png';
 import pdfIcon from '@/Assets/Images/pdfIcon.png';
 import excelIcon from '@/Assets/Images/excelIcon.png';
@@ -14,6 +14,7 @@ import { GiBrokenWall } from 'react-icons/gi';
 
 const Document = ({auth, document, document_list, permision}) => {
     const [previewMode, setPreviewMode] = useState(false);
+    const [requestingAccess, setRequestAccess] = useState(false);
     useEffect(() => {
         // console.log(document);
     }, [])
@@ -71,7 +72,12 @@ const Document = ({auth, document, document_list, permision}) => {
     }
     
     const requestAccess = async () => {
-
+        setRequestAccess(true); 
+        await axios.post(route('api.request_access'), {document_id: document.id})
+        .then((res) => {
+            console.log(res.data);
+            router.reload();
+        })
     }
 
     return (
