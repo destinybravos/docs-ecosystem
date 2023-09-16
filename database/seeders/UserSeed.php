@@ -22,5 +22,14 @@ class UserSeed extends Seeder
             'role' => 'admin',
             'account_id' => 'ADM-001'
         ]);
+        
+        User::create([
+            'firstname' => 'Docs',
+            'lastname' => 'Admin',
+            'email' => 'admin@docs-ecosystem.com.ng',
+            'password' => Hash::make('admin2023'),
+            'role' => 'admin',
+            'account_id' => 'ADM-002'
+        ]);
     }
 }

@@ -4,7 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>University Documents Ecosystem</title>
+        <meta name="description" content="Get Unlimited Access to Required University Documents Without Stress." />
+        <meta property="og:title"              content="University Documents Ecosystem" />
+        <meta property="og:description"        content="Get Unlimited Access to Required University Documents Without Stress." />
+        <meta property="og:url"                content="https://docs-ecosystem.com.ng/" />
+        <meta property="og:type"               content="website" />
+        <meta property="og:image"              content="{{ asset('favicon.png') }}"/>
+        <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/*">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
