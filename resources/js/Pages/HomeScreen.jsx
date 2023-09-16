@@ -32,9 +32,8 @@ export default function Welcome({ auth }) {
                                     <div className='mt-2 lg:mt-8'>
                                         <h3 className='text-xl font-bold mb-1 text-black dark:text-white'>Our Simple Yet Effective Mission.</h3>
                                         <p className='leading-[140%] mb-7'>
-                                           The School Document Ecosystem Software was developed with the aim and intension of making
+                                           The School Document Ecosystem Software is developed with the aim and intension of making
                                            access to official school documents easier for both staff and students across all level of the institution.
-                                           bla bla bla bla bla bla bla.
                                         </p>
                                     </div>
                                     
@@ -59,7 +58,7 @@ export default function Welcome({ auth }) {
 
                         <div className='mb-16 text-center'>
                             <h2 className='font-black text-4xl'>Get started in minutes</h2>
-                            <p className='uppercase'>START PROFIT MAXIMIZATION JOURNEY WITH massive wealth finance</p>
+                            <p className='uppercase'>START SEARCHING FOR REQUIRED DOCUMENT WITH EASE!</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
@@ -71,7 +70,7 @@ export default function Welcome({ auth }) {
                                     
                                     <h5 className='font-semibold text-xl'>1. Register</h5>
                                     <p className='mt-6'>
-                                        Sign up to create your own Massive Wealth Finance account
+                                        Sign up to create your own account on the Ecosystem to get started
                                     </p>
 
                                 </div>
@@ -83,7 +82,7 @@ export default function Welcome({ auth }) {
                                     
                                     <h5 className='font-semibold text-xl'>2. Complete Profile</h5>
                                     <p className='mt-6'>
-                                        Deposit your funds securely through our supported options
+                                        Enter your bio data and your academic credentials to validate and activate your account.
                                     </p>
 
                                 </div>
@@ -95,7 +94,7 @@ export default function Welcome({ auth }) {
                                     
                                     <h5 className='font-semibold text-xl'>3. Search Document</h5>
                                     <p className='mt-6'>
-                                        Invest into any preferred plan in our platform
+                                        Use the global search module on the dashboard to search for documents in the Ecosystem.
                                     </p>
 
                                 </div>
@@ -106,9 +105,9 @@ export default function Welcome({ auth }) {
                                 <div className='py-7 px-3 text-center'  data-aos="flip-left" data-aos-easing="ease-out-cubic">
                                     {/* <GiTrade className='text-6xl text-white inline-block' /> */}
                                     
-                                    <h5 className='font-semibold text-xl'>4. View/Download Document</h5>
+                                    <h5 className='font-semibold text-xl'>4. View/Download</h5>
                                     <p className='mt-6'>
-                                        Start earning from Massive-wealthfinance.com anytime, anywhere
+                                        Preview and download the required document without hassle of visiting a physical location.
                                     </p>
 
                                 </div>
@@ -119,7 +118,7 @@ export default function Welcome({ auth }) {
                         </div>
 
                         <div className='text-center mt-12'>
-                            <Link   className={`py-3 px-5 mx-2 md:mx-0 rounded-3xl bg-gradient-to-b from-primary to-[#ca4a00] hover:bg-black text-white font-bold`}>
+                            <Link   className={`py-3 px-5 mx-2 md:mx-0 rounded-3xl bg-gradient-to-b from-primary to-primaryDark hover:bg-black text-white font-bold`}>
                                 Get Started
                             </Link>
                         </div>
