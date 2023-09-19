@@ -17,15 +17,26 @@ import avatar from '@/Assets/avatar.svg';
 import SideBar from '@/Components/SideBar';
 import Modal from '@/Components/CustomModal';
 import SearchPage from '@/Pages/Admin/SearchPage';
+import NotificationList from '@/Components/NotificationList';
 
 export default function Authenticated({ user, header, children }) {
     const [dateState, setDateState] = useState(new Date());
     const [nav_open, openNav] = useState(false);
     const [openSearch, setSearchModal] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [openNotification, setOpenNotification] = useState(false);
 
     useEffect(() => {
            setInterval(() => setDateState(new Date()), 1000);
+           fetchNotifications();
     }, []);
+
+    const fetchNotifications = async () => {
+        await axios.get(route('api.fetch_notifications'))
+        .then((res) => {
+            setNotifications(res.data.body.notificacions);
+        })
+    }
 
     return (
         <>
@@ -99,11 +110,12 @@ export default function Authenticated({ user, header, children }) {
                                             <BiSearch size={20} className="absolute right-2" />
                                         </aside>
                                     </div>
-                                    <button className="relative">
+                                    <button className="relative" onClick={() => setOpenNotification((prev) => !prev)}>
                                         <FaRegBell size={20} />
-                                        <div className="absolute h-4 w-4 -top-2 -left-1 rounded-full bg-primary text-[0.6rem] flex items-center justify-center text-white p-1">
-                                            0
-                                        </div>
+                                        {(notifications && notifications.length > 0) && <div className="absolute h-4 w-4 -top-2 -left-1 rounded-full bg-primary text-[0.6rem] flex items-center justify-center text-white p-1">
+                                            {notifications.length}
+                                        </div>}
+                                        { openNotification && <NotificationList notifications={notifications} />}
                                     </button>
                                 </div>
                                 <div aria-label="active-user-details" className="md:px-2">

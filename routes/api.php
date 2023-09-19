@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\DocumentController;
+use App\Http\Controllers\Api\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,9 @@ use App\Http\Controllers\Api\DocumentController;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('notifications')->group(function () {
+        Route::get('fetch', [NotificationController::class, 'fetch'])->name('api.fetch_notifications');
+    });
 
     Route::prefix('documents')->group(function () {
         Route::post('save', [DocumentController::class, 'saveDocument'])->name('api.save_document');
@@ -24,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('search-ecosystem', [DocumentController::class, 'searchDocuments'])->name('api.search_documents');
         Route::post('increase-doc-downlaod', [DocumentController::class, 'increaseDocuments'])->name('api.increament.download');
         Route::post('request-access', [DocumentController::class, 'requestAccess'])->name('api.request_access');
+        Route::post('delete-document', [DocumentController::class, 'deleteDocument'])->name('api.document.delete');
     });
 
     Route::prefix('admin')->group(function () {

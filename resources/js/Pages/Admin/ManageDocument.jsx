@@ -11,6 +11,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useDebounce } from '@/hooks/Search';
 import { Head, Link, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { BiTrashAlt } from 'react-icons/bi';
 import { BsDownload, BsEye } from 'react-icons/bs';
 import { FaSave, FaUserTag } from 'react-icons/fa';
 import { FiLayers } from 'react-icons/fi';
@@ -22,6 +23,9 @@ export default function ManageDocument({ auth }) {
     const [processing, setProcessing] = useState(false);
     const [departments, setDepartment] = useState([]);
     const [documents, setDocuments] = useState([]);
+    const [selectedDoc, setSelectedDocument] = useState();
+    const [deleteMode, setDeleteMode] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
 
     let fetchDepartments = async () => {
@@ -46,6 +50,7 @@ export default function ManageDocument({ auth }) {
     useEffect(() => {
         let url = new URL(location.href);
         let search = url.searchParams.get('search');
+        setSearchParam(search)
         fetchDepartments();
         fetchDocuments(search);
     }, [])
@@ -81,7 +86,25 @@ export default function ManageDocument({ auth }) {
         .catch((err) => {
             console.log("Error::=>", err?.response?.data);   
         })
-     }, 500)
+     }, 500);
+
+    const deleteDocument = async () => {
+        setDeleting(true); 
+        await axios.post(route('api.document.delete'), {document_id: selectedDoc.id})
+        .then((res) => {
+            console.log(res.data);
+            setDeleteMode(false);
+            alert(res.data.message);
+            setDeleting(false)
+            fetchDocuments(searchParam);
+            
+            // router.visit(route('document_ecosystem'));
+        })
+        .catch((err) => {
+            setDeleting(false); 
+            alert('Error: ' + err?.response.data?.message);
+        });
+    }
 
     return (
         <AuthenticatedLayout
@@ -128,10 +151,13 @@ export default function ManageDocument({ auth }) {
                     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {documents?.data && documents?.data.map((document) => (<li key={document.id} className="bg-white dark:bg-slate-800 dark:text-slate-300 shadow-md rounded-lg">
                             <div className="px-3 py-2">
-                                <div className="mb-2 capitalize">
+                                <div className="mb-2 capitalize flex justify-between">
                                     <span className="inline-block py-1 px-2 bg-primary text-white rounded-md text-xs">
                                         { document.access_level }
                                     </span>
+                                    { (auth.user.role == 'admin' || auth.user.id == document?.user.id) && <button className="text-red-500 py-1 px-2" onClick={() => {setDeleteMode(true); setSelectedDocument(document)}}>
+                                            <BiTrashAlt className="h-5 w-5" />
+                                        </button> }
                                 </div>
                                 <h2 className="text-lg font-bold mb-2 line-clamp-2">
                                     { document.doc_name }
@@ -269,6 +295,23 @@ export default function ManageDocument({ auth }) {
                     </form>
                 </section>
             </Modal>
+
+            {/* Modal Delete Document */}
+
+            <Modal maxWidth="md" show={deleteMode} onClose={() => setDeleteMode(false)}>
+                <div className="py-4 px-5">
+                    <h2 className="font-extrabold border-b mb-4">Delete Docment</h2>
+                    <p className="text-base text-center">Are you sure you want to delete this docuument?</p>
+
+                    <div className="mt-10 flex">
+                        <button  className="px-4 py-2 mr-2 bg-gray-300 rounded-sm" onClick={() => setDeleteMode(false)}>Cancel</button>
+                        <button className="px-4 py-2  bg-red-600 rounded-sm text-white" onClick={deleteDocument}>
+                            { deleting ? <Loader message="Deleting..." /> : <span>Delete</span>}
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
         </AuthenticatedLayout>
     );
 }

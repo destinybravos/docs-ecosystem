@@ -5,16 +5,18 @@ import wordIcon from '@/Assets/Images/wordIcon.png';
 import pdfIcon from '@/Assets/Images/pdfIcon.png';
 import excelIcon from '@/Assets/Images/excelIcon.png';
 import pPointIcon from '@/Assets/Images/ppoint.png';
-import { BiArrowBack, BiBookOpen } from 'react-icons/bi';
+import { BiArrowBack, BiBookOpen, BiTrashAlt } from 'react-icons/bi';
 import { BsDownload, BsEye, BsShieldExclamation } from 'react-icons/bs';
 import Modal from '@/Components/CustomModal';
 import avatar from '@/Assets/avatar.svg';
 import FilePreviewer from '@/Components/FilePreviewer';
-import { GiBrokenWall } from 'react-icons/gi';
+import Loader from '@/Components/Loader';
 
 const Document = ({auth, document, document_list, permision}) => {
     const [previewMode, setPreviewMode] = useState(false);
     const [requestingAccess, setRequestAccess] = useState(false);
+    const [deleteMode, setDeleteMode] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     useEffect(() => {
         // console.log(document);
     }, [])
@@ -46,29 +48,26 @@ const Document = ({auth, document, document_list, permision}) => {
         axios.post(route('api.increament.download'), {document_id: document.id});
     }
 
-   
-
-
     const renderDocumentIcon = (document)=>{
-       if(document.type =='image'){
-        return document.path + document.name;
-       }
+        if(document.type =='image'){
+            return document.path + document.name;
+        }
 
-       if(document.ext == 'docx'){
-            return wordIcon;
-       }
+        if(document.ext == 'docx'){
+                return wordIcon;
+        }
 
-       if(document.ext == 'pdf'){
-        return pdfIcon
-       }
+        if(document.ext == 'pdf'){
+            return pdfIcon
+        }
 
-       if(document.ext == 'xlsx'){
-        return excelIcon
-       }
+        if(document.ext == 'xlsx'){
+            return excelIcon
+        }
 
-       if(document.ext == 'pptx'){
-        return pPointIcon
-       }
+        if(document.ext == 'pptx'){
+            return pPointIcon
+        }
     }
     
     const requestAccess = async () => {
@@ -76,8 +75,26 @@ const Document = ({auth, document, document_list, permision}) => {
         await axios.post(route('api.request_access'), {document_id: document.id})
         .then((res) => {
             console.log(res.data);
+            alert(res.data.message);
             router.reload();
         })
+        .catch((err) => {
+            alert('Error: ' + err?.response.data?.message);
+        });
+    }
+
+    const deleteDocument = async () => {
+        setDeleting(true); 
+        await axios.post(route('api.document.delete'), {document_id: document.id})
+        .then((res) => {
+            alert(res.data.body.message);
+            console.log(res.data);
+            router.visit(route('document_ecosystem'));
+        })
+        .catch((err) => {
+            setDeleting(false); 
+            alert('Error: ' + err?.response.data?.message);
+        });
     }
 
     return (
@@ -137,14 +154,14 @@ const Document = ({auth, document, document_list, permision}) => {
                                             (document.request_access && document.access_granted != 'granted' && auth.user.role != 'admin') && 
                                                 <span>
                                                     Your request status is <strong>"{auth.user.role == 'admin' ? 'no permission needed' : document.access_granted}".</strong> Kindly contact the department administrator or the relevant 
-                                                    authority.
+                                                    authority if request is not granted.
                                                 </span> 
                                         }
                                     </h4>
                                     
                                     {/* Download Button */}
                                     <aside className="flex-shrink-0 flex gap-2">
-                                        { ((document.request_access && document.access_granted == 'granted') || auth.user.role == 'admin') ? (<button className="btn-primary text-sm flex gap-3 items-center" onClick={() => downloadFiles()}>
+                                        { ((document.request_access == false) || (document.request_access && document.access_granted == 'granted') || auth.user.role == 'admin') ? (<button className="btn-primary text-sm flex gap-3 items-center" onClick={() => downloadFiles()}>
                                             <BsDownload className="w-5 h-5 inline-block" />  Download
                                         </button>) : (<button className="bg-red-500 text-white rounded-full px-2 md:px-4 py-2 dark:text-white shadow-md text-sm flex gap-3 items-center" onClick={() => requestAccess()}>
                                             <BsShieldExclamation className="w-5 h-5 inline-block" />  Request for Access
@@ -166,14 +183,17 @@ const Document = ({auth, document, document_list, permision}) => {
                                 {/* User Details */}
                                 <section className="mt-5">
                                     <h2 className="text-based font-bold text-primary mb-2">Uploaded By:</h2>
-                                    <div>
+                                    <div className="flex justify-between items-center">
                                         <div className="flex gap-x-3">
                                             <img src={document.user?.avatar ? document.user?.avatar : avatar} alt=' ' className="rounded-full h-9 w-9 bg-slate-300" />
-                                            <aside className="hidden md:block text-left leading-4">
+                                            <aside className="block text-left leading-4">
                                                 <strong>{document.user.firstname} {document.user?.lastname}</strong> <br />
                                                 <small className="text-slate-500 capitalize">{document.user.role}</small>
                                             </aside>
                                         </div>
+                                        { (auth.user.role == 'admin' || auth.user.id == document.user.id) && <button className="text-red-500 py-1 px-2" onClick={() => setDeleteMode(true)}>
+                                            <BiTrashAlt className="h-7 w-7" />
+                                        </button> }
                                     </div>
                                 </section>
                             </aside>
@@ -238,9 +258,25 @@ const Document = ({auth, document, document_list, permision}) => {
             </section>
 
             
-            {/* Modals Add Document */}
+            {/* Modals Preview Document */}
             <Modal show={previewMode} maxWidth="xl" onClose={() => setPreviewMode(false)}>
                 <FilePreviewer files={document.files} />
+            </Modal>
+
+            {/* Modal Delete Document */}
+
+            <Modal maxWidth="md" show={deleteMode} onClose={() => setDeleteMode(false)}>
+                <div className="py-4 px-5">
+                    <h2 className="font-extrabold border-b mb-4">Delete Docment</h2>
+                    <p className="text-base text-center">Are you sure you want to delete this docuument?</p>
+
+                    <div className="mt-10 flex">
+                        <button  className="px-4 py-2 mr-2 bg-gray-300 rounded-sm" onClick={() => setDeleteMode(false)}>Cancel</button>
+                        <button className="px-4 py-2  bg-red-600 rounded-sm text-white" onClick={deleteDocument}>
+                            { deleting ? <Loader message="Deleting..." /> : <span>Delete</span>}
+                        </button>
+                    </div>
+                </div>
             </Modal>
         </AuthenticatedLayout>
     )

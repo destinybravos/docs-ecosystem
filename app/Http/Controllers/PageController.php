@@ -117,6 +117,12 @@ class PageController extends Controller
                 $document->access_granted = $this->checkIfAccessGranted($user, $document);
             }
 
+            // return [
+            //     'document' => $document,
+            //     'document_list' => $documentList,
+            //     'permision' => $permision
+            // ];
+
             return Inertia::render('Admin/Document', [
                 'document' => $document,
                 'document_list' => $documentList,
