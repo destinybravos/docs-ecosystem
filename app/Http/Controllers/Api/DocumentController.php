@@ -65,7 +65,7 @@ class DocumentController extends Controller
             $document->access_level = $request->access_by;
             $document->description = $request->description;
             $document->department_only = filter_var($request->department_only, FILTER_VALIDATE_BOOL);
-            $document->request_access = filter_var($request->department_only, FILTER_VALIDATE_BOOL);
+            $document->request_access = filter_var($request->request_access, FILTER_VALIDATE_BOOL);
             
             if ($document->save()) {
                 $documents = Document::orderBy('doc_name', 'ASC')->paginate(30);
