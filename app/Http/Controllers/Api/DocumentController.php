@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ResponseController;
 use App\Models\AccessRequest;
+use App\Utils\Methods;
 
 class DocumentController extends Controller
 {
@@ -86,9 +87,9 @@ class DocumentController extends Controller
         if (isset($request->search_param) && $request->search_param !== null) {
             $documents = Document::where(function($query) use ($request){
                 $query->where('doc_name', 'LIKE', '%'.$request->search_param.'%');
-            })->orderBy('doc_name', 'ASC')->paginate(10);
+            })->orderBy('doc_name', 'ASC')->with(['department', 'user'])->paginate(10);
         } else {
-            $documents = Document::orderBy('doc_name', 'ASC')->paginate(10);
+            $documents = Document::orderBy('doc_name', 'ASC')->with(['department', 'user'])->paginate(10);
         }
         return $this->sendResponse('Saved sucesfully', [
             'documents' => $documents
@@ -112,7 +113,7 @@ class DocumentController extends Controller
         } else {
             $documents = [];
         }
-        return $this->sendResponse('Saved sucesfully', [
+        return $this->sendResponse('fetch sucesfully', [
             'documents' => $documents
         ]);
     }
@@ -123,7 +124,8 @@ class DocumentController extends Controller
             $access->document_id = $request->document_id;
             $access->user_id = $request->user()->id;
             if ($access->save()) {
-                return $this->sendResponse('Saved sucesfully', [
+                Methods::RequestAccessNotification($access);
+                return $this->sendResponse('Access request sent successfully', [
                     'access' => $access
                 ]);
             } else {
@@ -131,7 +133,8 @@ class DocumentController extends Controller
             }
         } else {
             $access = AccessRequest::where('document_id', $request->document_id)->where('user_id', $request->user()->id)->first();
-            return $this->sendResponse('Saved sucesfully', [
+            Methods::RequestAccessNotification($access);
+            return $this->sendResponse('Access request sent successfully', [
                 'access' => $access
             ]);
         }
@@ -152,6 +155,28 @@ class DocumentController extends Controller
             return $this->sendResponse('updated sucesfully', [
                 'accesses' => $accesses
             ]);
+        }
+    }
+
+    public function deleteDocument(Request $request){
+        $validator = Validator::make($request->all(), [
+            'document_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Missing or invalid document ID.', 
+            $validator->errors()->all(), 422);
+        }
+
+        $document = Document::where('id', $request->document_id)->first();
+        AccessRequest::where('document_id', $document->id)->delete();
+        // foreach ($document->files as $file) {
+        //     unlink($file['path'] . $file['ext']);
+        // }
+        if ($document->delete()) {
+            return $this->sendResponse('Document deleted sucesfully', []);
+        } else {
+            return $this->sendError('Document was not deleted successful due to an unexpected error.', [], 500);
         }
     }
 }
