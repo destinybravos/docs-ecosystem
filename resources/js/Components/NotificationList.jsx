@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react'
 import React from 'react'
 
 const NotificationList = ({notifications}) => {
@@ -6,7 +7,7 @@ const NotificationList = ({notifications}) => {
         {notifications.length > 0 ? <ul className="divide-y text-left">
             {notifications && notifications.map((notification) => (<li key={notification.id}
                 className='py-1 px-2 text-sm'>
-                    <span dangerouslySetInnerHTML={{__html: notification.data.message}}></span>
+                    <Link href={notification.data.link} dangerouslySetInnerHTML={{__html: notification.data.message}}></Link>
             </li>))}
         </ul>:
         <ul>
