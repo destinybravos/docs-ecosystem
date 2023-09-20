@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
+
+    public function access_requests()
+    {
+        return $this->hasMany(AccessRequest::class);
+    }
 }
