@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\NotificationController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('notifications')->group(function () {
         Route::get('fetch', [NotificationController::class, 'fetch'])->name('api.fetch_notifications');
+        Route::post('update', [NotificationController::class, 'update'])->name('api.update_notification');
     });
 
     Route::prefix('documents')->group(function () {
@@ -42,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('save-department', [AdminController::class, 'save_department'])->name('api.admin.save_department');
         Route::get('fetch-faculties', [AdminController::class, 'fetch_faculties'])->name('api.admin.fetch_faculties');
         Route::get('fetch-department', [AdminController::class, 'fetchDepartments'])->name('api.admin.fetch_departments');
+        Route::post('delete-faculties', [AdminController::class, 'delete_faculty'])->name('api.admin.delete_faculty');
+        Route::post('delete-department', [AdminController::class, 'deleteDepartment'])->name('api.admin.delete_departments');
         Route::get('fetch_general', [AdminController::class, 'fetchDashboardStats'])->name('api.fetch_statistics');
         Route::get('fetch_access_request', [DocumentController::class, 'fetchAccessRequest'])->name('api.admin.fetch_access_request');
         Route::post('update_access_request', [DocumentController::class, 'updateAccessRequest'])->name('api.admin.update_access_request');

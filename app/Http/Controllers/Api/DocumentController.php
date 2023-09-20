@@ -151,6 +151,8 @@ class DocumentController extends Controller
         if(AccessRequest::where('id', $request->access_id)->update([
             'permission' => $request->permission
         ])){
+            $access = AccessRequest::where('id', $request->access_id)->first();
+            Methods::UpdateAccessNotification($access);
             $accesses = AccessRequest::orderBy('created_at', 'DESC')->with(['user', 'document'])->get();
             return $this->sendResponse('updated sucesfully', [
                 'accesses' => $accesses

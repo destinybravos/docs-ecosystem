@@ -14,7 +14,19 @@ class NotificationController extends Controller
     public function fetch(Request $request){
         $user = User::where('id', $request->user()->id)->first();
         return $this->sendResponse("Notificaations fetched successfully", [
-            'notificacions' => $user->notifications
+            'notificacions' => $user->unreadNotifications
+        ]);
+    }
+
+    public function update(Request $request){
+        $user = User::where('id', $request->user()->id)->first();
+        foreach ($user->unreadNotifications as $notification) {
+            if ($notification->id == $request->notification_id) {
+                $notification->markAsRead();
+            }
+        }
+        return $this->sendResponse("Notificaations fetched successfully", [
+            'notificacions' => $user->unreadNotifications
         ]);
     }
 }

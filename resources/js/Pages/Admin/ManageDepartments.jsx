@@ -95,6 +95,24 @@ export default function Dashboard({ auth }) {
         }
     }
 
+    const deleteFaculties = async (id) =>{
+        await axios.post(route('api.admin.delete_faculty'), {id})
+        .then((res) => {
+            fetchFaculties();
+            fetchDepartments();
+        })
+    }
+
+    const deleteDepartments = async (id) =>{
+     
+        try{
+           const res = await axios.post(route('api.admin.delete_departments'), {id});
+           fetchDepartments();
+        }catch(error){
+            console.log(error)
+        }
+    }
+
     React.useEffect(()=>{
         fetchFaculties();
         fetchDepartments();
@@ -153,7 +171,7 @@ export default function Dashboard({ auth }) {
                                         {i +1}
                                     </div>
                                     <h1 className="ml-2 font-semibold">{department.name}</h1>
-                                    <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
+                                    <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block" onClick={() => deleteDepartments(department.id)}>
                                     <FaTimesCircle className="h-4 w-4 inline-block" />
                                     </button>
                                 </div>  
@@ -173,7 +191,7 @@ export default function Dashboard({ auth }) {
                                     {i +1}
                                 </div>
                                 <h1 className="ml-2 font-semibold">{faculties.name}</h1>
-                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block">
+                                <button className="rounded-full text-red-500 absolute right-1 hidden group-hover:block" onClick={() => deleteFaculties(faculties.id)}>
                                  <FaTimesCircle className="h-4 w-4 inline-block" />
                                 </button>
                             </div>  
